@@ -7,7 +7,7 @@ namespace AspNetCoreWithVue.Models
 {
     public interface IEmployee
     {
-        List<Employee> GetEmployees();
+        IEnumerable<Employee> GetEmployees();
 
         Employee GetEmployee(int Id);
         

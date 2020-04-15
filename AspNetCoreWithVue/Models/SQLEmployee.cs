@@ -15,7 +15,9 @@ namespace AspNetCoreWithVue.Models
 
         public Employee Add(Employee employee)
         {
-            throw new NotImplementedException();
+            context.Add(employee);
+            context.SaveChanges();
+            return employee;
         }
 
         public Employee Delete(int id)
@@ -28,9 +30,9 @@ namespace AspNetCoreWithVue.Models
             throw new NotImplementedException();
         }
 
-        public List<Employee> GetEmployees()
+        public IEnumerable<Employee> GetEmployees()
         {
-            throw new NotImplementedException();
+            return context.Employees;
         }
 
         public Employee Update(Employee employeeChanges)

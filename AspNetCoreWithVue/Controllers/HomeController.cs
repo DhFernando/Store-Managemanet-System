@@ -21,6 +21,19 @@ namespace AspNetCoreWithVue.Controllers
             return Json(_employee.GetEmployees());
         }
 
+        public JsonResult Add()
+        {
+            Employee employee = new Employee
+            {
+                Name = "Dilshan",
+                Department = "IT",
+                Address = "Ganemulla",
+                BirthDay = new DateTime(1996,9,9)
+            };
+
+            return Json(_employee.Add(employee));
+        }
+
         public IActionResult Privacy()
         {
             return View();

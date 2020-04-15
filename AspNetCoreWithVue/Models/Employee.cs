@@ -7,8 +7,10 @@ namespace AspNetCoreWithVue.Models
 {
     public class Employee
     {
-        public String Id { get; set; }
+        public int Id { get; set; }
         public String Name { get; set; }
+        public String Address { get; set; }
+        public DateTime BirthDay { get; set; }
         public String Department { get; set; }
         
     }
