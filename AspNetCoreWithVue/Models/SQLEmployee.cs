@@ -7,7 +7,7 @@ namespace AspNetCoreWithVue.Models
 {
     public class SQLEmployee : IEmployee
     {
-        private readonly AppDbContext context;
+        private readonly AppDbContext context; 
         public SQLEmployee(AppDbContext context)
         {
             this.context = context;
@@ -22,7 +22,17 @@ namespace AspNetCoreWithVue.Models
 
         public Employee Delete(int id)
         {
-            throw new NotImplementedException();
+            Employee employee = context.Employees.Find(id);
+            if(employee == null)
+            {
+
+            }
+            else
+            {
+                context.Employees.Remove(employee);
+                context.SaveChanges();
+            }
+            return employee;
         }
 
         public Employee GetEmployee(int Id)

@@ -37,24 +37,16 @@ namespace AspNetCoreWithVue.Controllers
         }
 
         [HttpPost]
-        public JsonResult test(JsonResult model)
+        public JsonResult DeleteEmployee(int id)
         {
-           
 
-            return Json(model);
+            return Json(_employee.Delete(id));
+
         }
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+       
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
 
        
     }
