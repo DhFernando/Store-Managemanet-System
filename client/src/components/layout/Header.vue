@@ -2,7 +2,7 @@
     <v-app-bar app color="primary" dark >
       <div class="d-flex align-center">
        
-        <h2>test</h2>
+        <h2>Vue ASP.Net Core EMS</h2>
       </div>
 
       <v-spacer></v-spacer>

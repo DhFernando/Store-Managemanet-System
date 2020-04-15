@@ -8,6 +8,7 @@ using AspNetCoreWithVue.Models;
 
 namespace AspNetCoreWithVue.Controllers
 {
+    
     public class HomeController : Controller
     {
         IEmployee _employee; 
@@ -21,18 +22,28 @@ namespace AspNetCoreWithVue.Controllers
             return Json(_employee.GetEmployees());
         }
 
-        public JsonResult Add()
+        [HttpPost]
+        public JsonResult Add([FromBody]Employee model)
         {
             Employee employee = new Employee
             {
-                Name = "Dilshan",
-                Department = "IT",
-                Address = "Ganemulla",
-                BirthDay = new DateTime(1996,9,9)
+                Name = model.Name,
+                Address = model.Address,
+                BirthDay = model.BirthDay,
+                Department = model.Department
             };
-
+            
             return Json(_employee.Add(employee));
         }
+
+        [HttpPost]
+        public JsonResult test(JsonResult model)
+        {
+           
+
+            return Json(model);
+        }
+
 
         public IActionResult Privacy()
         {
