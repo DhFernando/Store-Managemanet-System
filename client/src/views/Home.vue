@@ -14,21 +14,23 @@
                             <tr>
                               <th class="text-left">#</th>
                               <th class="text-left">Name</th>
+                              <th class="text-left">Address</th>
                               <th class="text-left">BirthDay</th>
                               <th class="text-left">Department</th>
                               <th class="text-left">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="Employee in Employees" :key="Employee.id">
+                            <tr v-for="Employee in getAllEmployee" :key="Employee.id">
                               <td>{{ Employee.id }}</td>
+                              <td>{{ Employee.name }}</td>
                               <td>{{ Employee.address }}</td>
                               <td>{{ Employee.birthDay }}</td>
                               <td>{{ Employee.department }}</td>
                               <td>
                                 <v-icon @click="deleteEmployee(Employee.id)" color="error">mdi-delete-forever</v-icon> |
-                                <v-icon color="blue">mdi-file-find</v-icon> |
-                                <v-icon color="green">mdi-account-edit</v-icon>
+                                <v-icon color="blue" @click.stop="dialog = true" @click="getEmployee(Employee.id)">mdi-file-find</v-icon> |
+                                <v-icon color="green" @click="editEmployee(Employee.id)">mdi-account-edit</v-icon>
                                </td>
                             </tr>
                           </tbody>
@@ -56,26 +58,54 @@
           </v-row>
         </v-col>
       </v-row>
-    {{test}}
+      
+      <!-- --------  dialog  ---------- -->
+
+      <v-dialog v-model="dialog"  max-width="590" >
+          <v-card>
+              <v-card-title class="headline"> Edit  {{ this.$store.getters.editbleEmployee.Name }} #{{ this.$store.getters.editbleEmployee.Id }}</v-card-title>
+              <hr>
+              <v-card-text class="py-4">
+                  <v-form ref="form">
+                      <v-text-field v-model="this.$store.getters.editbleEmployee.Name" required label="Name" ></v-text-field>
+                      <v-text-field v-model="this.$store.getters.editbleEmployee.Address" label="Address" required ></v-text-field>
+                      
+                      <v-text-field v-model="this.$store.getters.editbleEmployee.Department" label="Department" required ></v-text-field>
+                      
+                      <v-btn color="primary" class="mr-4" @click="updateEmployee" > Edit Employee </v-btn>
+                      <v-btn color="error" class="mr-2" @click.stop="dialog = false">Cancle</v-btn>
+                    </v-form>
+              </v-card-text>
+          </v-card>
+      </v-dialog>
+      <!-- --------  dialog  ---------- -->
+      
+      <!-- {{this.$store.state.editbleEmployee}} -->
+      {{ test }}
     </v-container>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
-import axios from "axios";
+  
 export default {
+  
   name: 'Home',
+  components: {
+   
+  },
   data(){
     return{
-      Employees:"",
+     dialog: false,
       newEmployee : {
         Name:"",
         Address:"",
         BirthDay:new Date(),
         Department:""
       },
+
+      test:"xqs",
+      
       headers: [
           { text: '#', value: 'id' },
           { text: 'Name', value: 'name' },
@@ -83,52 +113,45 @@ export default {
           { text: 'BirthDay', value: 'birthDay' },
           { text: 'Department', value: 'department' },
         ],
-        test:"dcwe"
     }
   },
   created(){
-    this.getAllEmployee();
+    this.$store.commit('getAllEmployee');
   },
   computed:{
-    
+    getAllEmployee(){
+      if(this.$store.getters.reloadGetAllEmployee == true){
+         this.$store.commit('getAllEmployee')
+         this.$store.commit('makeReloadGetAllEmployeeFalse')
+        }
+      return this.$store.getters.getAllEmployee
+    }
   },
   methods:{
+    getEmployee:function(id){
+      var url = "https://localhost:44361/home/GetEmployee?id=" + id.toString()
+      this.$store.commit('getEmployee', { url }) 
 
-    getAllEmployee : function(){
-      axios.get("https://localhost:44361/").then(res=>{
-        this.Employees = res.data;
-      });
     },
 
+    updateEmployee:function(){
+      // this.$store.commit('updateEmployee')
+      this.test = this.$store.getters.editbleEmployee
+    },
+    
     getNewEmployee : function(){
       if(this.newEmployee.name == "" || this.newEmployee.Address == "" || this.newEmployee.Department == ""){
         alert("Fill all the Fields")
       }else{
-        axios.post("https://localhost:44361/home/add",this.newEmployee).then(res=>{
-          this.test = res.data;
-          this.getAllEmployee();
-          this.newEmployee.Name = "";
-          this.newEmployee.Address = "";
-          this.newEmployee.BirthDay = "";
-          this.newEmployee.Department = "";
-        });
-        
+        var _newEmployee = this.newEmployee
+        this.$store.commit('addEmployee', { _newEmployee })
+        this.$store.commit('getAllEmployee')
       }
-
-      
     },
     
     deleteEmployee : function (id){
-        var url = "https://localhost:44361/home/DeleteEmployee?id=" + id.toString()
-        axios.post(url).then(res=>{
-            if(res.id != null){
-                this.getAllEmployee();
-            }
-        })
-        
-
-         
-        
+      var url = "https://localhost:44361/home/DeleteEmployee?id=" + id.toString()
+      this.$store.commit('deleteEmployee', { url })
     }
   }
 

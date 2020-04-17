@@ -5,7 +5,7 @@
           <v-col cols="12" sm="8" md="4" >
             <v-card class="elevation-12">
               <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Login</v-toolbar-title>
+                <v-toolbar-title>Register Form</v-toolbar-title>
                 <v-spacer />
                 <v-tooltip bottom>
                   
@@ -16,13 +16,14 @@
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field  label="Login" name="login"  type="text" /> 
-                  <v-text-field id="password" label="Password" name="password"  type="password" />
-                </v-form>
+                  <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
+                  <v-text-field v-model="AccountRegistrationData.Password"  label="Password"   type="password" /> 
+                  <v-text-field v-model="AccountRegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
+                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary">Login</v-btn>
+                <v-btn color="primary" @click="AccountRegistrationDataSend()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -31,9 +32,31 @@
     </div>
 </template>
 
+
 <script>
+import axios from "axios";
 export default {
-    name:'Login'
+    name:'Login',
+    data(){
+      return{
+        AccountRegistrationData : {
+          Email:"",
+          Password:"",
+          ConfirmPassword:""
+        },
+      
+      }
+    },
+    methods:{
+      AccountRegistrationDataSend: function(){
+        var _AccountRegistrationData = this.AccountRegistrationData
+        if(this.AccountRegistrationData.Password == this.AccountRegistrationData.ConfirmPassword ){
+          axios.post("https://localhost:44361/Account/Register", _AccountRegistrationData).then(res => {
+            if(res.data != null ){ alert(this.test = res.data) }
+          })
+        }else{ alert("Password Not Match") }
+      }
+    }
 }
 </script>
 

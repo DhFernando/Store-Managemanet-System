@@ -44,10 +44,18 @@ namespace AspNetCoreWithVue.Controllers
 
         }
 
+        [HttpGet]
+        public JsonResult GetEmployee(int id)
+        {
 
-       
+            return Json(_employee.GetEmployee(id));
+
+        }
 
 
-       
+
+
+
+
     }
 }

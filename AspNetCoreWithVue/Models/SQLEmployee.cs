@@ -37,7 +37,12 @@ namespace AspNetCoreWithVue.Models
 
         public Employee GetEmployee(int Id)
         {
-            throw new NotImplementedException();
+            Employee employee = context.Employees.Find(Id);
+            if(employee == null)
+            {
+                
+            }
+            return employee;
         }
 
         public IEnumerable<Employee> GetEmployees()

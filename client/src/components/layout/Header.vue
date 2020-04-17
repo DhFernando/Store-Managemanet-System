@@ -4,7 +4,7 @@
        
         <h2>Vue ASP.Net Core EMS</h2>
       </div>
-
+      <v-btn class="ml-5 " text  href="/">Home</v-btn>
       <v-spacer></v-spacer>
 
       <v-btn to="/login" text>
