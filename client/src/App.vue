@@ -13,6 +13,9 @@ import Header from './components/layout/Header'
 
 export default {
   name: 'App',
+  created(){
+    // this.$store.commit("CheckLogInStatus");
+  },
 
   components: {
     Header

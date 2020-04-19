@@ -6,17 +6,10 @@
             <v-card class="elevation-12">
               <v-toolbar color="primary" dark flat>
                 <v-toolbar-title>Register Form</v-toolbar-title>
-                <v-spacer />
-                <v-tooltip bottom>
-                  
-                </v-tooltip>
-                <v-tooltip right>
-                  
-                </v-tooltip>
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
+                   <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
                   <v-text-field v-model="AccountRegistrationData.Password"  label="Password"   type="password" /> 
                   <v-text-field v-model="AccountRegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
                  </v-form>
@@ -24,11 +17,14 @@
               <v-card-actions>
                 <v-spacer />
                 <v-btn color="primary" @click="AccountRegistrationDataSend()">Login</v-btn>
+               
               </v-card-actions>
             </v-card>
           </v-col>
         </v-row>
       </v-container>
+      
+      {{(AccountRegistrationData)}}
     </div>
 </template>
 
@@ -42,18 +38,32 @@ export default {
         AccountRegistrationData : {
           Email:"",
           Password:"",
-          ConfirmPassword:""
+          ConfirmPassword:"",
+          
         },
       
       }
     },
     methods:{
+   
       AccountRegistrationDataSend: function(){
         var _AccountRegistrationData = this.AccountRegistrationData
         if(this.AccountRegistrationData.Password == this.AccountRegistrationData.ConfirmPassword ){
-          axios.post("https://localhost:44361/Account/Register", _AccountRegistrationData).then(res => {
-            if(res.data != null ){ alert(this.test = res.data) }
-          })
+        
+          
+          
+            axios.post("https://localhost:44361/account/Register", {
+              Email:_AccountRegistrationData.Email,
+              Password:_AccountRegistrationData.Password,
+              ConfirmPassword:_AccountRegistrationData.ConfirmPassword
+            }).then(res => {
+              if(res.data != null ){ 
+                // state.userLogedIn = true
+                alert(res.data)
+              }
+            })
+         
+
         }else{ alert("Password Not Match") }
       }
     }

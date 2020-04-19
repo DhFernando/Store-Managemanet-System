@@ -29,8 +29,16 @@ namespace AspNetCoreWithVue
         {
           
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EMSwithVueAndASPConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                options.Password.RequiredLength = 3;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddCors();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -39,7 +47,13 @@ namespace AspNetCoreWithVue
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.ConfigureApplicationCookie(options=> {
+                options.CookieHttpOnly = true;
+            });
+
             services.AddScoped<IEmployee, SQLEmployee>();
+
+            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -50,12 +64,12 @@ namespace AspNetCoreWithVue
 
             app.UseCors(options =>
             {
-                options.AllowAnyOrigin()
+                options.WithOrigins("http://localhost:8080")
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials();
+                .AllowAnyHeader();
             });
 
+          //  app.UseAuthentication();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -63,7 +77,6 @@ namespace AspNetCoreWithVue
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -72,7 +85,7 @@ namespace AspNetCoreWithVue
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
+        
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

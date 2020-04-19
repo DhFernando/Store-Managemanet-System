@@ -15,20 +15,53 @@ export default new Vuex.Store({
       BirthDay:new Date(),
       Department:""
     },
-
+    userLogedIn:false,
+    loggedUserData:"",
+    t:""
+    
     
   },
   getters: {
     getAllEmployee:(state)=>{  return state.Employees },
     reloadGetAllEmployee : (state) => { return state.reloadGetAllEmployee },
     getEmployee:(state)=>{ return state.getEmployee },
-    editbleEmployee:(state)=>{ return state.editbleEmployee }
+    editbleEmployee:(state)=>{ return state.editbleEmployee },
+    userLogedIn:(state) =>{ return state.userLogedIn },
+    loggedUserData:(state)=>{ return state.loggedUserData },
+    t:(state) => {return state.t }
   },
   actions: {
   
   },
 
   mutations: {
+    t:(state) => {
+      axios.get( "https://localhost:44361/Account/gettest" ).then(res => {
+        if(res.data != null ){ 
+          
+          state.t = res.data
+        }
+      })
+    },
+
+    CheckLogInStatus : (state) => {
+      axios.get( "https://localhost:44361/Account/CheckLogInStatus" ).then(res => {
+        if(res.data != null ){ 
+          state.userLogedIn = true
+          state.loggedUserData = res.data
+        }
+      })
+    },
+
+    AccountRegistrationDataSend : (state , {url , _AccountRegistrationData}) =>{
+      axios.post(url, _AccountRegistrationData).then(res => {
+        if(res.data != null ){ 
+          // state.userLogedIn = true
+          alert(res.data)
+        }
+      })
+    },
+
     getAllEmployee:(state)=>{
       axios.get("https://localhost:44361/").then(res=>{
         state.Employees = res.data;

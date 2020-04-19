@@ -79,9 +79,9 @@
           </v-card>
       </v-dialog>
       <!-- --------  dialog  ---------- -->
-      
+     
       <!-- {{this.$store.state.editbleEmployee}} -->
-      {{ test }}
+      {{ this.$store.getters.loggedUserData }}
     </v-container>
   </div>
 </template>
@@ -119,6 +119,7 @@ export default {
     this.$store.commit('getAllEmployee');
   },
   computed:{
+
     getAllEmployee(){
       if(this.$store.getters.reloadGetAllEmployee == true){
          this.$store.commit('getAllEmployee')
@@ -128,6 +129,8 @@ export default {
     }
   },
   methods:{
+
+   
     getEmployee:function(id){
       var url = "https://localhost:44361/home/GetEmployee?id=" + id.toString()
       this.$store.commit('getEmployee', { url }) 
