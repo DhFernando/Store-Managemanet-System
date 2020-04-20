@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AspNetCoreWithVue.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AspNetCoreWithVue.Controllers
 {
@@ -25,7 +29,7 @@ namespace AspNetCoreWithVue.Controllers
         [HttpPost]
         public async Task<JsonResult> Register([FromBody]RegistrationModel model)
         {
-           var headers = Request.Headers;
+           
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = model.Email, Email = model.Email };
@@ -33,27 +37,57 @@ namespace AspNetCoreWithVue.Controllers
 
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    var name = signInManager.IsSignedIn(User);
-                    if (signInManager.IsSignedIn(User)) {
-                        return Json("Your are LoggedIn");
-                    }
-                    else
+                    var tokenDescriptor = new SecurityTokenDescriptor
                     {
-                         return Json("Your Not Logged In");
-                    }
-                   
+                        Subject = new ClaimsIdentity(new Claim[]
+                     {
+                        new Claim("UserId", user.Id.ToString())
+                     }),
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890123456")), SecurityAlgorithms.HmacSha256Signature)
+                    };
+
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(securityToken);
+                    return Json(token);
                 }
                 
             }
             return Json("Your Email has Alrady Exist");
         }
 
-        [HttpGet]
-        public JsonResult Gettest()
+        [HttpPost]
+        public async Task<JsonResult> Login([FromBody]Login model)
         {
-            if (signInManager.IsSignedIn(User)) { return Json("yes"); }
-            return Json("No");
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if(user != null && await userManager.CheckPasswordAsync(user, model.Password))
+            {
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserId", user.Id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890123456")),SecurityAlgorithms.HmacSha256Signature) 
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Json(token);
+            }
+            return Json("faild To logIn");
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetProfile()
+        {
+            String userId = User.Claims.First(c => c.Type == "UserId").Value;
+            var user = await userManager.FindByIdAsync(userId);
+
+            return Json(user);
         }
 
     }
