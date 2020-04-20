@@ -4,14 +4,22 @@
        
         <h2>Vue ASP.Net Core EMS</h2>
       </div>
-      <v-btn class="ml-5 " text  href="/">Home</v-btn>
+      <v-btn class="ml-5 " text  to="/">Home</v-btn>
       <v-spacer></v-spacer>
       
-      <v-btn to="/login" text>
+      <v-btn v-show="!LogedIn" to="/login" text>
         <span class="mr-2">Login</span>
         <v-icon>mdi-lock</v-icon>
       </v-btn>
-      {{userLogedIn }} {{ test }}
+      <v-btn v-show="!LogedIn" to="/register" text>
+        <span class="mr-2">Register</span>
+        <v-icon>mdi-lock</v-icon>
+      </v-btn>
+      <v-btn v-show="LogedIn" @click="destroyToken" text>
+        <span class="mr-2">LogOut</span>
+        <v-icon>mdi-lock</v-icon>
+      </v-btn>
+     
     </v-app-bar>
 
     
@@ -21,13 +29,21 @@
 // import axios from "axios";
 export default {
     name:'Header',
-    computed : {
-      userLogedIn() { return this.$store.getters.userLogedIn },
-      test(){
-        if(this.userLogedIn == true){return 1;}
-        else{ return 0 }
-      },
-     
+    
+    computed:{
+      LogedIn(){
+        return this.$store.getters.LogedIn
+      }
+    },
+    methods:{
+      destroyToken:function(){
+        this.$store.dispatch("destroyToken")
+        .then(res =>{
+          if(res != null){
+            this.$router.push({ name : "Home" })
+          }
+        })
+      }
     }
 }
 </script>

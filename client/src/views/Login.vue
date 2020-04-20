@@ -24,13 +24,12 @@
         </v-row>
       </v-container>
       
-      {{(AccountRegistrationData)}}
     </div>
 </template>
 
 
 <script>
-import axios from "axios";
+
 export default {
     name:'Login',
     data(){
@@ -39,33 +38,27 @@ export default {
           Email:"",
           Password:"",
           ConfirmPassword:"",
-          
-        },
-      
+         },
       }
     },
     methods:{
    
       AccountRegistrationDataSend: function(){
         var _AccountRegistrationData = this.AccountRegistrationData
+      
         if(this.AccountRegistrationData.Password == this.AccountRegistrationData.ConfirmPassword ){
-        
+          this.$store.dispatch('AccountRegistrationDataSend' , _AccountRegistrationData )
+          .then( res => {
+            if(res != null){
+              this.$router.push({ name : "Home" })
+            }
+          })
           
-          
-            axios.post("https://localhost:44361/account/Register", {
-              Email:_AccountRegistrationData.Email,
-              Password:_AccountRegistrationData.Password,
-              ConfirmPassword:_AccountRegistrationData.ConfirmPassword
-            }).then(res => {
-              if(res.data != null ){ 
-                // state.userLogedIn = true
-                alert(res.data)
-              }
-            })
-         
-
-        }else{ alert("Password Not Match") }
+        }else{ 
+          alert("Password Not Match") 
+        }
       }
+
     }
 }
 </script>

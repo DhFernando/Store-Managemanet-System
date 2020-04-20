@@ -79,7 +79,7 @@
           </v-card>
       </v-dialog>
       <!-- --------  dialog  ---------- -->
-     
+     <v-btn @click="test2">test</v-btn>
       <!-- {{this.$store.state.editbleEmployee}} -->
       {{ this.$store.getters.loggedUserData }}
     </v-container>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-  
+  // import axios from "axios";
 export default {
   
   name: 'Home',
@@ -129,7 +129,25 @@ export default {
     }
   },
   methods:{
+    test2:function(){
+      //  axios.defaults.headers.common['Authorization'] = 'Bearer' + this.$store.state.token
+      //  axios.get("https://localhost:44361/account/GetProfile").then(res => {
+      //    console.log(res.data)
+      //  })
+  const requestOptions = {
+          method: 'GET',
+          headers: { 'Authorization': 'Bearer ' + this.$store.state.token }
+    };
+      fetch(`https://localhost:44361/account/GetProfile`, requestOptions).then(response =>{
+         console.log( response.text().then(text => {
+            const data = text && JSON.parse(text);
+            return data.id;
+          })
+          );
+      })
 
+      
+    },
    
     getEmployee:function(id){
       var url = "https://localhost:44361/home/GetEmployee?id=" + id.toString()

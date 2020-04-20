@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+
+
 // import { stat } from 'fs';
 Vue.use(Vuex)
 
@@ -15,9 +17,8 @@ export default new Vuex.Store({
       BirthDay:new Date(),
       Department:""
     },
-    userLogedIn:false,
-    loggedUserData:"",
-    t:""
+    
+   token: localStorage.getItem("access_token") || null
     
     
   },
@@ -26,42 +27,52 @@ export default new Vuex.Store({
     reloadGetAllEmployee : (state) => { return state.reloadGetAllEmployee },
     getEmployee:(state)=>{ return state.getEmployee },
     editbleEmployee:(state)=>{ return state.editbleEmployee },
-    userLogedIn:(state) =>{ return state.userLogedIn },
-    loggedUserData:(state)=>{ return state.loggedUserData },
-    t:(state) => {return state.t }
+    LogedIn:(state) =>{ return state.token !== null},
+    
+
+    
   },
   actions: {
+    AccountRegistrationDataSend : (contex ,  _AccountRegistrationData ) => {  
+     return new Promise((resolve , reject)=>{
+
+        axios.post("https://localhost:44361/account/Register", _AccountRegistrationData)
+        .then(res => {
+            if(res.data != null ){ 
+              const token = res.data
+              localStorage.setItem('access_token',token)
+              contex.commit('AccountRegistrationDataSend',token)
+              resolve(token)
+            }
+          }).catch( error => {
+            console.log(error)
+            reject(error)
+          });
+
+      })
   
+    },
+
+    destroyToken:(contex)=>{
+      return new Promise((resolve)=>{
+        contex.commit("destroyToken")
+        resolve("done")
+      })
+    }
   },
 
   mutations: {
-    t:(state) => {
-      axios.get( "https://localhost:44361/Account/gettest" ).then(res => {
-        if(res.data != null ){ 
-          
-          state.t = res.data
-        }
-      })
+
+    AccountRegistrationDataSend:(state , token ) =>{
+      state.token = token
     },
 
-    CheckLogInStatus : (state) => {
-      axios.get( "https://localhost:44361/Account/CheckLogInStatus" ).then(res => {
-        if(res.data != null ){ 
-          state.userLogedIn = true
-          state.loggedUserData = res.data
-        }
-      })
+    destroyToken:(state) =>{
+      localStorage.removeItem("access_token")
+      state.token = null
     },
 
-    AccountRegistrationDataSend : (state , {url , _AccountRegistrationData}) =>{
-      axios.post(url, _AccountRegistrationData).then(res => {
-        if(res.data != null ){ 
-          // state.userLogedIn = true
-          alert(res.data)
-        }
-      })
-    },
-
+    
     getAllEmployee:(state)=>{
       axios.get("https://localhost:44361/").then(res=>{
         state.Employees = res.data;

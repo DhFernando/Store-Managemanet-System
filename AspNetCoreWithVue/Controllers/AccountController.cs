@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCoreWithVue.Models.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -82,6 +83,7 @@ namespace AspNetCoreWithVue.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<JsonResult> GetProfile()
         {
             String userId = User.Claims.First(c => c.Type == "UserId").Value;
