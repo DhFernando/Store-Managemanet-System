@@ -19,7 +19,8 @@ export default new Vuex.Store({
     },
     
    token: localStorage.getItem("access_token") || null ,
-    userProfile:[]
+   userProfile:[],
+   ApplicationUsers:[]
     
   },
   getters: {
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     getEmployee:(state)=>{ return state.getEmployee },
     editbleEmployee:(state)=>{ return state.editbleEmployee },
     LogedIn:(state) =>{ return state.token !== null},
-    userProfile:(state)=>{ return state.userProfile }
+    userProfile:(state)=>{ return state.userProfile },
+    ApplicationUsers:(state)=>{return state.ApplicationUsers}
 
     
   },
@@ -68,6 +70,20 @@ export default new Vuex.Store({
          
         }) 
        
+      })
+    },
+
+    getApplicationUsers:(contex) =>{
+      return new Promise((resolve)=>{
+        axios.get("https://localhost:44361/Administration/GetAllApplicationUsers",{
+          headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+        }).then(res => {
+          if(res.data != null ){ 
+            
+            contex.commit("getApplicationUsers", res.data )
+            resolve("done")
+           }
+        })
       })
     }
   },
@@ -121,6 +137,10 @@ export default new Vuex.Store({
         }
         else{alert("Sorry")}
       })
+    },
+
+    getApplicationUsers:(state , data) =>{
+      state.ApplicationUsers = data
     },
 
     makeReloadGetAllEmployeeFalse : (state) => {

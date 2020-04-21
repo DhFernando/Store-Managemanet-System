@@ -45,14 +45,7 @@ namespace AspNetCoreWithVue.Controllers
             return Json(_employee.Delete(id));
 
         }
-        [HttpPost]
-        [Authorize]
-        public JsonResult testing([FromBody]int id)
-        {
-
-            return Json(id);
-
-        }
+        
 
         [HttpGet]
         public JsonResult GetEmployee(int id)

@@ -6,6 +6,7 @@
       </div>
       <v-btn class="ml-5 " text  to="/">Home</v-btn>
       <v-btn class="ml-5 " text  to="/profile/profile_index">Profile</v-btn>
+      <v-btn class="ml-5 " text  to="/Administration/Administration_index">Administration</v-btn>
       <v-spacer></v-spacer>
       
       <v-btn v-show="!LogedIn" to="/login" text>
