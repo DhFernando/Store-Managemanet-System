@@ -3,6 +3,7 @@
     <Header></Header>
     <v-content>
       <router-view></router-view>
+      {{test}}
     </v-content>
     
   </v-app>
@@ -14,7 +15,9 @@ import Header from './components/layout/Header'
 export default {
   name: 'App',
   created(){
-    // this.$store.commit("CheckLogInStatus");
+    if(this.$store.getters.LogedIn != null){
+      this.$store.dispatch("GetProfile")
+    }
   },
 
   components: {
@@ -22,7 +25,7 @@ export default {
   },
 
   data: () => ({
-    //
+    test:""
   }),
 };
 </script>

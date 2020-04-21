@@ -5,6 +5,7 @@
         <h2>Vue ASP.Net Core EMS</h2>
       </div>
       <v-btn class="ml-5 " text  to="/">Home</v-btn>
+      <v-btn class="ml-5 " text  to="/profile/profile_index">Profile</v-btn>
       <v-spacer></v-spacer>
       
       <v-btn v-show="!LogedIn" to="/login" text>

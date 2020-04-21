@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AspNetCoreWithVue.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspNetCoreWithVue.Controllers
 {
@@ -37,10 +38,19 @@ namespace AspNetCoreWithVue.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteEmployee(int id)
+        [Authorize]
+        public JsonResult DeleteEmployee([FromBody]int id)
         {
 
             return Json(_employee.Delete(id));
+
+        }
+        [HttpPost]
+        [Authorize]
+        public JsonResult testing([FromBody]int id)
+        {
+
+            return Json(id);
 
         }
 

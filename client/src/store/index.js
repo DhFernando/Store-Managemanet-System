@@ -18,8 +18,8 @@ export default new Vuex.Store({
       Department:""
     },
     
-   token: localStorage.getItem("access_token") || null
-    
+   token: localStorage.getItem("access_token") || null ,
+    userProfile:[]
     
   },
   getters: {
@@ -28,7 +28,7 @@ export default new Vuex.Store({
     getEmployee:(state)=>{ return state.getEmployee },
     editbleEmployee:(state)=>{ return state.editbleEmployee },
     LogedIn:(state) =>{ return state.token !== null},
-    
+    userProfile:(state)=>{ return state.userProfile }
 
     
   },
@@ -58,6 +58,17 @@ export default new Vuex.Store({
         contex.commit("destroyToken")
         resolve("done")
       })
+    },
+    GetProfile:(contex)=>{
+      return new Promise(()=>{
+        axios.get("https://localhost:44361/account/GetProfile", {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+        }).then(res => {
+         contex.commit("GetProfile" , res.data)
+         
+        }) 
+       
+      })
     }
   },
 
@@ -71,7 +82,9 @@ export default new Vuex.Store({
       localStorage.removeItem("access_token")
       state.token = null
     },
-
+    GetProfile:(state , data)=>{
+      state.userProfile = data
+    },
     
     getAllEmployee:(state)=>{
       axios.get("https://localhost:44361/").then(res=>{
@@ -83,8 +96,10 @@ export default new Vuex.Store({
       alert ( state.editbleEmployee.Name )
     },
 
-    deleteEmployee : (state , { url }) => {
-      axios.post(url).then(res => {
+    deleteEmployee : (state , { _id }) => {
+     axios.post("https://localhost:44361/home/DeleteEmployee", _id ,{
+        headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + state.token }
+      }).then(res => {
         if(res.data != null ){ state.reloadGetAllEmployee = true }
       })
     },
