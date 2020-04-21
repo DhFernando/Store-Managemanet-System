@@ -87,7 +87,7 @@
 </template>
 
 <script>
-  // import axios from "axios";
+  import axios from "axios";
 export default {
   
   name: 'Home',
@@ -130,23 +130,11 @@ export default {
   },
   methods:{
     test2:function(){
-      //  axios.defaults.headers.common['Authorization'] = 'Bearer' + this.$store.state.token
-      //  axios.get("https://localhost:44361/account/GetProfile").then(res => {
-      //    console.log(res.data)
-      //  })
-  const requestOptions = {
-          method: 'GET',
-          headers: { 'Authorization': 'Bearer ' + this.$store.state.token }
-    };
-      fetch(`https://localhost:44361/account/GetProfile`, requestOptions).then(response =>{
-         console.log( response.text().then(text => {
-            const data = text && JSON.parse(text);
-            return data.id;
-          })
-          );
-      })
-
-      
+       axios.get("https://localhost:44361/account/GetProfile", {
+                headers: { 'Authorization': 'Bearer ' + this.$store.state.token }
+          }).then(res => {
+         console.log(res.data)
+       })      
     },
    
     getEmployee:function(id){
