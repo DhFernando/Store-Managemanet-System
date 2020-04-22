@@ -20,7 +20,8 @@ export default new Vuex.Store({
     
    token: localStorage.getItem("access_token") || null ,
    userProfile:[],
-   ApplicationUsers:[]
+   ApplicationUsers:[],
+   ApplicationUser : []
     
   },
   getters: {
@@ -30,7 +31,8 @@ export default new Vuex.Store({
     editbleEmployee:(state)=>{ return state.editbleEmployee },
     LogedIn:(state) =>{ return state.token !== null},
     userProfile:(state)=>{ return state.userProfile },
-    ApplicationUsers:(state)=>{return state.ApplicationUsers}
+    ApplicationUsers:(state)=>{return state.ApplicationUsers},
+    ApplicationUser:(state)=>{ return state.ApplicationUser }
 
     
   },
@@ -73,7 +75,7 @@ export default new Vuex.Store({
       })
     },
 
-    getApplicationUsers:(contex) =>{
+    getApplicationUsers:(contex ) =>{
       return new Promise((resolve)=>{
         axios.get("https://localhost:44361/Administration/GetAllApplicationUsers",{
           headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
@@ -85,6 +87,37 @@ export default new Vuex.Store({
            }
         })
       })
+    },
+    getApplicationUser:(contex,ApplicationUser_id)=>{
+      var _id = {id:ApplicationUser_id}
+      
+      return new Promise((resolve)=>{
+        axios.post("https://localhost:44361/Administration/GetApplicationUser", _id,{
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+          }).then(res => {
+          if(res.data != null){
+            contex.commit("getApplicationUser" , res.data )
+            resolve("Success")
+          }
+        })
+      })
+    },
+
+    deleteApplicationUser:(contex,ApplicationUser_id)=>{
+      var data = {
+        id:ApplicationUser_id
+      }
+      return new Promise((resolve)=>{
+        axios.post("https://localhost:44361/Administration/DeleteApplicationUser", data,{
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+          }).then(res => {
+          if(res.data != null){
+            resolve(res.data)
+          }
+        })
+      })
+        
+
     }
   },
 
@@ -101,6 +134,8 @@ export default new Vuex.Store({
     GetProfile:(state , data)=>{
       state.userProfile = data
     },
+
+    
     
     getAllEmployee:(state)=>{
       axios.get("https://localhost:44361/").then(res=>{
@@ -142,7 +177,23 @@ export default new Vuex.Store({
     getApplicationUsers:(state , data) =>{
       state.ApplicationUsers = data
     },
+    getApplicationUser:(state , data)=>{
+      state.ApplicationUser = []
+      state.ApplicationUser = data
+    },
+    deleteApplicationUser:(state,ApplicationUser_id)=>{
+      var data = {
+        id:ApplicationUser_id
+      }
+      axios.post("https://localhost:44361/Administration/DeleteApplicationUser", data,{
+          headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+        }).then(res => {
+        if(res.data != null){
+          console.log(res.data)
+        }
+      })
 
+    },
     makeReloadGetAllEmployeeFalse : (state) => {
       state.reloadGetAllEmployee = false
     }

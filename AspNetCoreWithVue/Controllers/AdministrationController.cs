@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreWithVue.Models.Admistration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,37 @@ namespace AspNetCoreWithVue.Controllers
             var users = userManager.Users;
 
             return Json(users);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult DeleteEmployee([FromBody]IdentityUser data)
+        {
+
+            return Json(data);
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetApplicationUser([FromBody]IdentityUser model)
+        {
+             var user = await userManager.FindByIdAsync(model.Id);
+            
+            return Json(user);
+            
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteApplicationUser([FromBody]IdentityUser model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
+            if(user == null)
+            {
+                return Json("user Not Found");
+            }
+            var result = await userManager.DeleteAsync(user);
+            return Json(result);
+
         }
     }
 }

@@ -40,7 +40,7 @@ namespace AspNetCoreWithVue.Controllers
         [HttpPost]
         [Authorize]
         public JsonResult DeleteEmployee([FromBody]int id)
-        {
+         {
 
             return Json(_employee.Delete(id));
 
