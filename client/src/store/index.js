@@ -21,7 +21,8 @@ export default new Vuex.Store({
    token: localStorage.getItem("access_token") || null ,
    userProfile:[],
    ApplicationUsers:[],
-   ApplicationUser : []
+   ApplicationUser : [],
+   RoleWithUsers:[]
     
   },
   getters: {
@@ -32,7 +33,8 @@ export default new Vuex.Store({
     LogedIn:(state) =>{ return state.token !== null},
     userProfile:(state)=>{ return state.userProfile },
     ApplicationUsers:(state)=>{return state.ApplicationUsers},
-    ApplicationUser:(state)=>{ return state.ApplicationUser }
+    ApplicationUser:(state)=>{ return state.ApplicationUser },
+    RoleWithUsers:(state)=>{ return state.RoleWithUsers }
 
     
   },
@@ -116,8 +118,20 @@ export default new Vuex.Store({
           }
         })
       })
-        
+    
+    },
 
+    GetRoleWithUsers:(contex)=>{
+      return new Promise((resolve)=>{
+        axios.get("https://localhost:44361/Administration/GetRoleWithUsers", {
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+          }).then(res => {
+          if(res.data != null){
+            contex.commit("GetRoleWithUsers",res.data)
+            resolve(res.data)
+          }
+        })
+      })
     }
   },
 
@@ -193,6 +207,9 @@ export default new Vuex.Store({
         }
       })
 
+    },
+    GetRoleWithUsers:(state,data)=>{
+      state.RoleWithUsers = data
     },
     makeReloadGetAllEmployeeFalse : (state) => {
       state.reloadGetAllEmployee = false

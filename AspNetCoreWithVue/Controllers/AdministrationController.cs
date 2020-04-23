@@ -61,5 +61,35 @@ namespace AspNetCoreWithVue.Controllers
             return Json(result);
 
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetRoleWithUsers()
+        {
+            var res = new List<RoleWithUsers>();
+            var roles = roleManager.Roles;
+            foreach(var role in roles)
+            {
+                var model = new RoleWithUsers
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+                
+                foreach(var user in userManager.Users)
+                {
+                    if (await userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        model.Users.Add(user);
+                    }
+                }
+
+                res.Add(model);
+            }
+
+
+
+            return Json(res);
+
+        }
     }
 }
