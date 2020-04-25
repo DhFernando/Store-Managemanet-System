@@ -3,7 +3,7 @@
     <Header></Header>
     <v-content>
       <router-view></router-view>
-      {{test}}
+    
     </v-content>
     
   </v-app>
@@ -19,13 +19,13 @@ export default {
       this.$store.dispatch("GetProfile")
     }
   },
-
+  
   components: {
     Header
   },
 
   data: () => ({
-    test:""
+  
   }),
 };
 </script>

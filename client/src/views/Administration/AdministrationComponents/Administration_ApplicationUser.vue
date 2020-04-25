@@ -47,7 +47,7 @@
         <v-dialog v-model="dialog"  max-width="590" >
           <v-card>
               <v-card-title class="headline"> 
-                {{ApplicationUser.userName}}  # <v-btn color="primary" class="ml-12" tile >Edit Role</v-btn> 
+                {{ApplicationUser.userName}}  # <v-btn color="primary" @click.stop="dialog2 = true" @click="GetUserRoles(ApplicationUser.id)" class="ml-12" tile >Edit Role</v-btn> 
               </v-card-title>
               <hr>
               <v-card-text class="py-4">
@@ -57,14 +57,54 @@
                       <v-text-field  label="Email" required v-model="ApplicationUser.email"></v-text-field>
                       
                       <v-btn color="primary" class="mr-4"  > Edit ApplicationUser </v-btn>
-                      <v-btn color="error" class="mr-2">Cancle</v-btn>
+                      <v-btn color="error" class="mr-2" @click.stop="dialog = !true">Cancle</v-btn>
                     </v-form>
               </v-card-text>
           </v-card>
         </v-dialog>
         <!-- ---------------------------------------------------- -->
 
+        <!-- ---------------------------------------------------- -->
+        <v-dialog v-model="dialog2"  max-width="590" >
+          <v-card>
+              <v-card-title class="headline"> 
+                {{ApplicationUser.userName}}  #  
+              </v-card-title>
+              <hr>
+              <v-card-text class="py-4">
+                  <v-row><h4>Employee List</h4></v-row>
+                  <v-row>
+                    <v-col :cols="12">
+                        <v-simple-table fixed-header >
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th v-for="UserRole in UserRoles" :key="UserRole.id" class="text-left">
+                                  {{UserRole.role.name}}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td v-for="UserRole in UserRoles" :key="UserRole.id" >
+                                   <v-checkbox v-model="UserRole.roleIsAssign"></v-checkbox>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                    </v-col>
+                  </v-row>
+                  
+                  <v-btn color="primary" class="mr-4" @click="UpdateUserRoles()" > Update Role </v-btn>
+                  <v-btn color="error" class="mr-2" @click.stop="dialog = true" @click="dialog2 = !true">Cancle</v-btn>
+                    
+              </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!-- ---------------------------------------------------- -->
 
+{{UserRoles}}
         
     </v-container>
   </div>
@@ -77,12 +117,14 @@ export default {
     data(){
       return{
         dialog: false,
+        dialog2: false,
         ApplicationUsers : [],
         ApplicationUser:{
           id:null,
           userName:null,
           email:null
         },
+        UserRoles:[]
          
       }
     },
@@ -123,6 +165,19 @@ export default {
             })
           }
         })
+      },
+      GetUserRoles(ApplicationUser_id){
+        this.dialog = false
+        this.$store.dispatch("GetUserRoles",ApplicationUser_id)
+        .then(res =>{
+          if(res != null){
+            this.UserRoles = this.$store.getters.UserRoles
+          }
+        })
+      },
+      UpdateUserRoles(){
+        var _userRoles = this.UserRoles
+        this.$store.dispatch("UpdateUserRoles",_userRoles)
       }
     }
 }

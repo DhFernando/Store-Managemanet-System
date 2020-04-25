@@ -86,10 +86,71 @@ namespace AspNetCoreWithVue.Controllers
                 res.Add(model);
             }
 
-
-
             return Json(res);
 
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetUserRoles(String id)
+        {
+            var res = new List<UserWithRole>();
+           
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null) { return Json("null"); }
+
+            
+            
+            foreach(var role in roleManager.Roles)
+            {
+                var model = new UserWithRole() {  Role = role ,  UserId = user.Id };
+
+                if(await userManager.IsInRoleAsync(user, role.Name))
+                {
+
+                    model.roleIsAssign = true;
+                    
+                }
+                else
+                {
+
+                    model.roleIsAssign = false;
+                   
+                }
+               
+                res.Add(model);
+
+            }
+            return Json(res);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateUserRoles([FromBody]List<UserWithRole> Objects)
+        {
+            foreach(var obj in Objects)
+            {
+                var user = await userManager.FindByIdAsync(obj.UserId);
+                //var role = await roleManager.FindByIdAsync(obj.Role.Id); --> i have role name form font end then i dont want find it again
+                // IdentityResult result = null;
+                if (user != null)
+                {
+                    if(obj.roleIsAssign && !await userManager.IsInRoleAsync(user, obj.Role.Name))
+                    {
+                        await userManager.AddToRoleAsync(user, obj.Role.Name);
+                    }
+                    else if (!obj.roleIsAssign && await userManager.IsInRoleAsync(user, obj.Role.Name))
+                    {
+                        await userManager.AddToRoleAsync(user, obj.Role.Name);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return Json("Updated");
+        }
+
     }
 }

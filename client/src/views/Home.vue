@@ -29,7 +29,7 @@
                               <td>{{ Employee.department }}</td>
                               <td>
                                 <v-icon @click="deleteEmployee(Employee.id)" color="error">mdi-delete-forever</v-icon>
-                                |<v-icon @click="test3(Employee.id)" color="error">r</v-icon>
+                            
                                 |
                                 <v-icon color="blue" @click.stop="dialog = true" @click="getEmployee(Employee.id)">mdi-file-find</v-icon> |
                                 <v-icon color="green" @click="editEmployee(Employee.id)">mdi-account-edit</v-icon>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
- import axios from "axios";
+//  import axios from "axios";
 export default {
   
   name: 'Home',
@@ -104,15 +104,6 @@ export default {
         Department:""
       },
 
-      test:"xqs",
-      
-      headers: [
-          { text: '#', value: 'id' },
-          { text: 'Name', value: 'name' },
-          { text: 'Address', value: 'address' },
-          { text: 'BirthDay', value: 'birthDay' },
-          { text: 'Department', value: 'department' },
-        ],
     }
   },
   created(){
@@ -130,15 +121,6 @@ export default {
   },
   methods:{
     
-    test3(id){
-            var _id = id.toString()
-            axios.post("https://localhost:44361/Administration/DeleteEmployee", _id ,{
-              headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
-            }).then(res => {
-              if(res.data != null ){ console.log(res.data) }
-            })
-        },
-  
     getEmployee:function(id){
       var url = "https://localhost:44361/home/GetEmployee?id=" + id.toString()
       this.$store.commit('getEmployee', { url }) 

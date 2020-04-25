@@ -22,7 +22,8 @@ export default new Vuex.Store({
    userProfile:[],
    ApplicationUsers:[],
    ApplicationUser : [],
-   RoleWithUsers:[]
+   RoleWithUsers:[],
+   UserRoles:[]
     
   },
   getters: {
@@ -34,7 +35,8 @@ export default new Vuex.Store({
     userProfile:(state)=>{ return state.userProfile },
     ApplicationUsers:(state)=>{return state.ApplicationUsers},
     ApplicationUser:(state)=>{ return state.ApplicationUser },
-    RoleWithUsers:(state)=>{ return state.RoleWithUsers }
+    RoleWithUsers:(state)=>{ return state.RoleWithUsers },
+    UserRoles:(state)=>{ return state.UserRoles }
 
     
   },
@@ -132,6 +134,36 @@ export default new Vuex.Store({
           }
         })
       })
+    },
+
+    GetUserRoles:(contex,ApplicationUser_id)=>{
+      var url = "https://localhost:44361/Administration/GetUserRoles/" + ApplicationUser_id
+      return new Promise((resolve)=>{
+        axios.get(url , {
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+          }).then(res=>{
+            if(res.data != null){
+              resolve("Success")
+              contex.commit("GetUserRoles" , res.data)
+            }
+          })
+      })
+    },
+    UpdateUserRoles:(contex , _userRoles)=>{
+      console.log(_userRoles)
+      return new Promise((resolve)=>{
+        var url = "https://localhost:44361/Administration/UpdateUserRoles/"
+        axios.post(url , _userRoles ,{
+          headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+        }).then(res=>{
+          if(res.data != null){
+            resolve("Success")
+            // contex.commit("GetUserRoles" , res.data)
+            console.log(res.data);
+            
+          }
+        })
+      })
     }
   },
 
@@ -210,6 +242,10 @@ export default new Vuex.Store({
     },
     GetRoleWithUsers:(state,data)=>{
       state.RoleWithUsers = data
+    },
+
+    GetUserRoles:(state , data)=>{
+      state.UserRoles = data
     },
     makeReloadGetAllEmployeeFalse : (state) => {
       state.reloadGetAllEmployee = false
