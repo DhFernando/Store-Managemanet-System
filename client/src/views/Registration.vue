@@ -9,22 +9,22 @@
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                   <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
+                  <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
+                  <v-text-field v-model="AccountRegistrationData.Address"  label="Address"   type="text" /> 
+                  <v-select class="mt-4"  :items="Designations" v-model="AccountRegistrationData.Designation"  label="Designation" dense ></v-select> 
                   <v-text-field v-model="AccountRegistrationData.Password"  label="Password"   type="password" /> 
                   <v-text-field v-model="AccountRegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
                  </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary" @click="AccountRegistrationDataSend()">Login</v-btn>
-               
+                <v-btn color="primary" @click="AccountRegistrationDataSend()">Register</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
         </v-row>
       </v-container>
-      
-    </div>
+   </div>
 </template>
 
 
@@ -36,9 +36,13 @@ export default {
       return{
         AccountRegistrationData : {
           Email:"",
+          Address:"",
+          Designations:"",
           Password:"",
           ConfirmPassword:"",
+          TokenAvailable:localStorage.getItem("access_token") || "null"
          },
+         Designations: ['Customer', 'Manager', 'Supervisor', 'CEO' , 'Salesman']
       }
     },
     methods:{

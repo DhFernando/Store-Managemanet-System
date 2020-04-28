@@ -3,9 +3,9 @@
     <Header></Header>
     <v-content>
       <router-view></router-view>
-    
+     
     </v-content>
-    
+
   </v-app>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   },
 
   data: () => ({
-  
+
   }),
 };
 </script>

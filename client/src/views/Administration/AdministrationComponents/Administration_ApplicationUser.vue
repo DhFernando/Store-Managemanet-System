@@ -2,32 +2,30 @@
   <div>
     <v-container>
         <v-row >
+          
           <v-col :cols="12">
-                <v-row><h4>Employee List</h4></v-row>
+                <v-row><h4>Application User List</h4></v-row>
+
                 <v-row>
                   <v-col :cols="12">
-                      <v-simple-table fixed-header height="300px">
+                      <v-simple-table fixed-header  height="330px">
                         <template v-slot:default>
-                          <thead>
-                            <tr>
+                          <thead >
+                            <tr >
                               <th class="text-left">#</th>
-                              <th class="text-left">userName</th>
-                              
-                              <th class="text-left">email</th>
-                             
+                              <th class="text-left">Designation</th>
+                              <th class="text-left">Email</th>
                               <th class="text-left">Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr v-for="ApplicationUser in ApplicationUsers" :key="ApplicationUser.id" >
                               <td>{{ApplicationUser.id}}</td>
-                              <td>{{ApplicationUser.userName}}</td>
+                              <td>{{ApplicationUser.designation}}</td>
                               <td>{{ApplicationUser.email}}</td>
-                              
                               <td>
-                                <v-icon @click="deleteApplicationUser(ApplicationUser.id)" color="error">mdi-delete-forever</v-icon> |
-                                <v-icon color="blue" @click.stop="dialog = true" @click="getApplicationUser(ApplicationUser.id)">mdi-file-find</v-icon> |
-                                <v-icon color="green" @click="editEmployee(Employee.id)">mdi-account-edit</v-icon>
+                                <v-icon color="green" @click.stop="dialog = true" @click="getApplicationUser(ApplicationUser.id)">mdi-file-find</v-icon> |
+                                <v-icon @click="deleteApplicationUser(ApplicationUser.id)" color="error">mdi-delete-forever</v-icon> 
                                </td>
                             </tr>
                           </tbody>
@@ -37,11 +35,7 @@
                 </v-row>
             </v-col>  
         </v-row>
-        <v-row>
-          <v-col cols="12">
-            
-          </v-col>
-        </v-row>
+        
 
         <!-- ---------------------------------------------------- -->
         <v-dialog v-model="dialog"  max-width="590" >
@@ -55,7 +49,8 @@
                       <v-text-field label="User Id" required disabled v-model="ApplicationUser.id" ></v-text-field>
                       <v-text-field  required label="User Name"  v-model="ApplicationUser.userName"></v-text-field>
                       <v-text-field  label="Email" required v-model="ApplicationUser.email"></v-text-field>
-                      
+                      <v-text-field v-model="ApplicationUser.address"  label="Address"   type="text" /> 
+                      <v-select class="mt-4"  :items="Designations" v-model="ApplicationUser.designation"  label="Designation" dense ></v-select>
                       <v-btn color="primary" class="mr-4"  > Edit ApplicationUser </v-btn>
                       <v-btn color="error" class="mr-2" @click.stop="dialog = !true">Cancle</v-btn>
                     </v-form>
@@ -104,7 +99,7 @@
         </v-dialog>
         <!-- ---------------------------------------------------- -->
 
-{{UserRoles}}
+       
         
     </v-container>
   </div>
@@ -114,33 +109,39 @@
 // import axios from "axios";
 export default {
     name:'Administration_index',
+    props:['dialog3'],
     data(){
       return{
         dialog: false,
         dialog2: false,
-        ApplicationUsers : [],
+       
+        
         ApplicationUser:{
           id:null,
           userName:null,
-          email:null
+          email:null,
+          designation:null,
+          address:null
         },
-        UserRoles:[]
+        
+        Designations: ['Customer', 'Manager', 'Supervisor', 'CEO' , 'Salesman'],
+        UserRoles:[],
+
+
+        
          
       }
     },
     components: {
-     
+    
     },
     created(){
       this.$store.dispatch("getApplicationUsers")
-      .then(res =>{
-        if(res != null){
-          this.ApplicationUsers = this.$store.getters.ApplicationUsers
-        }
-      })
     },
     computed: {
-      
+       ApplicationUsers(){
+       return this.$store.getters.ApplicationUsers
+     }
     },
     methods:{
       getApplicationUser:function(ApplicationUser_id){
@@ -149,6 +150,8 @@ export default {
             this.ApplicationUser.id = this.$store.getters.ApplicationUser.id
             this.ApplicationUser.userName = this.$store.getters.ApplicationUser.userName
             this.ApplicationUser.email = this.$store.getters.ApplicationUser.email
+            this.ApplicationUser.address = this.$store.getters.ApplicationUser.address
+            this.ApplicationUser.designation = this.$store.getters.ApplicationUser.designation
           }
         })
       },
@@ -158,11 +161,6 @@ export default {
         .then(res=>{
           if(res != null){
             this.$store.dispatch("getApplicationUsers")
-            .then(res =>{
-              if(res != null){
-                this.ApplicationUsers = this.$store.getters.ApplicationUsers
-              }
-            })
           }
         })
       },
@@ -178,7 +176,14 @@ export default {
       UpdateUserRoles(){
         var _userRoles = this.UserRoles
         this.$store.dispatch("UpdateUserRoles",_userRoles)
+        .then(()=>{
+          this.dialog = !false
+          this.dialog2 = false
+          this.$store.dispatch("GetRoleWithUsers")  
+        })
+
       }
+      
     }
 }
 </script>

@@ -10,9 +10,12 @@
         <v-card-title>{{userProfile.userName}}</v-card-title>
         <v-card-subtitle class="pb-0">( {{ userProfile.id }} )</v-card-subtitle>
 
-        <v-card-text class="text--primary">
+        <v-card-text class="text--primary mt-6">
           <div>Email : {{ userProfile.email }}</div>
+          <div>Adress : {{ userProfile.address }}</div>
+          <div>Designation : {{ userProfile.designation }}</div>
         </v-card-text>
+        
 
         <v-card-actions>
          

@@ -39,19 +39,17 @@ export default {
     name:'Administration_index',
     data(){
       return{
-          RoleWithUsers:[] 
+          // RoleWithUsers:[] 
       }
     },
     created(){
       this.$store.dispatch("GetRoleWithUsers")
-      .then((response)=>{
-        if(response != null){
-          this.RoleWithUsers = this.$store.getters.RoleWithUsers
-        }
-      })
+      
     },
     computed: {
-      
+      RoleWithUsers(){
+        return this.$store.getters.RoleWithUsers
+      }
     },
     methods:{
       

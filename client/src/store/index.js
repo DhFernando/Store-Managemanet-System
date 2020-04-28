@@ -23,7 +23,8 @@ export default new Vuex.Store({
    ApplicationUsers:[],
    ApplicationUser : [],
    RoleWithUsers:[],
-   UserRoles:[]
+   UserRoles:[],
+   newUserRegistrationDialog:false
     
   },
   getters: {
@@ -36,21 +37,20 @@ export default new Vuex.Store({
     ApplicationUsers:(state)=>{return state.ApplicationUsers},
     ApplicationUser:(state)=>{ return state.ApplicationUser },
     RoleWithUsers:(state)=>{ return state.RoleWithUsers },
-    UserRoles:(state)=>{ return state.UserRoles }
+    UserRoles:(state)=>{ return state.UserRoles },
+    newUserRegistrationDialog:(state)=>{return state.newUserRegistrationDialog}
 
     
   },
   actions: {
     AccountRegistrationDataSend : (contex ,  _AccountRegistrationData ) => {  
      return new Promise((resolve , reject)=>{
-
         axios.post("https://localhost:44361/account/Register", _AccountRegistrationData)
         .then(res => {
             if(res.data != null ){ 
-              const token = res.data
-              localStorage.setItem('access_token',token)
-              contex.commit('AccountRegistrationDataSend',token)
-              resolve(token)
+                const token = res.data
+                contex.commit('AccountRegistrationDataSend',token)
+                resolve("Done")
             }
           }).catch( error => {
             console.log(error)
@@ -101,6 +101,7 @@ export default new Vuex.Store({
           }).then(res => {
           if(res.data != null){
             contex.commit("getApplicationUser" , res.data )
+            console.log(res.data)
             resolve("Success")
           }
         })
@@ -158,9 +159,6 @@ export default new Vuex.Store({
         }).then(res=>{
           if(res.data != null){
             resolve("Success")
-            // contex.commit("GetUserRoles" , res.data)
-            console.log(res.data);
-            
           }
         })
       })
@@ -170,7 +168,10 @@ export default new Vuex.Store({
   mutations: {
 
     AccountRegistrationDataSend:(state , token ) =>{
-      state.token = token
+      if(state.token == null){
+          localStorage.setItem('access_token',token)
+         state.token = token
+      }
     },
 
     destroyToken:(state) =>{

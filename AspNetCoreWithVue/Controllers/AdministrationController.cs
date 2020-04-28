@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreWithVue.Models.Account;
 using AspNetCoreWithVue.Models.Admistration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,8 +16,8 @@ namespace AspNetCoreWithVue.Controllers
     {
 
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<IdentityUser> userManager;
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApplicationUser> userManager;
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -33,7 +34,7 @@ namespace AspNetCoreWithVue.Controllers
 
         [HttpPost]
         [Authorize]
-        public JsonResult DeleteEmployee([FromBody]IdentityUser data)
+        public JsonResult DeleteEmployee([FromBody]ApplicationUser data)
         {
 
             return Json(data);
@@ -41,7 +42,7 @@ namespace AspNetCoreWithVue.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> GetApplicationUser([FromBody]IdentityUser model)
+        public async Task<JsonResult> GetApplicationUser([FromBody]ApplicationUser model)
         {
              var user = await userManager.FindByIdAsync(model.Id);
             
@@ -50,7 +51,7 @@ namespace AspNetCoreWithVue.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> DeleteApplicationUser([FromBody]IdentityUser model)
+        public async Task<JsonResult> DeleteApplicationUser([FromBody]ApplicationUser model)
         {
             var user = await userManager.FindByIdAsync(model.Id);
             if(user == null)
@@ -140,7 +141,7 @@ namespace AspNetCoreWithVue.Controllers
                     }
                     else if (!obj.roleIsAssign && await userManager.IsInRoleAsync(user, obj.Role.Name))
                     {
-                        await userManager.AddToRoleAsync(user, obj.Role.Name);
+                        await userManager.RemoveFromRoleAsync(user, obj.Role.Name);
                     }
                     else
                     {

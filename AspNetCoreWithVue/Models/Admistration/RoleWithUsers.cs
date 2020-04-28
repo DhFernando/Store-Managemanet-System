@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AspNetCoreWithVue.Models.Account;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace AspNetCoreWithVue.Models.Admistration
     {
         public RoleWithUsers()
         {
-            Users = new List<IdentityUser>();
+            Users = new List<ApplicationUser>();
         }
         public String RoleId { get; set; }
         public String RoleName { get; set; }
-        public List<IdentityUser> Users { get; set; }
+        public List<ApplicationUser> Users { get; set; }
     }
 }

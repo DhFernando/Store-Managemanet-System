@@ -16,10 +16,10 @@ namespace AspNetCoreWithVue.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
     
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -33,10 +33,10 @@ namespace AspNetCoreWithVue.Controllers
            
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email , Address = model.Address , Designation = model.Designation };
                 var result = await userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
+                if (result.Succeeded && model.TokenAvailable == "null")
                 {
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
@@ -52,6 +52,9 @@ namespace AspNetCoreWithVue.Controllers
                     var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                     var token = tokenHandler.WriteToken(securityToken);
                     return Json(token);
+                }else if(result.Succeeded && model.TokenAvailable != "null")
+                {
+                    return Json("User Registration successful");
                 }
                 
             }
