@@ -4,21 +4,21 @@
       <v-row>
         <v-col  cols="12">
             <div>
-              <v-btn class="ml-5 " text @click="GoTo('Administration_ApplicationUser')" >User Management</v-btn> |
-              <v-btn class="ml-5 " text @click="GoTo('Administration_role')">Role Management</v-btn> |
+              <v-btn class="ml-5 " text @click="GoTo('ApplicationUser')" >Users</v-btn> |
+              <v-btn class="ml-5 " text @click="GoTo('Role')">Role</v-btn> |
               <v-btn class="ml-5 " text @click.stop="dialog = true" >Add User</v-btn>
             </div>
             <hr />
         </v-col>
       </v-row>
-      <v-row v-show="where == 'Administration_ApplicationUser' ">
+      <v-row v-show="where == 'ApplicationUser' ">
         <v-col cols="12">
-          <AdministrationApplicationUser ></AdministrationApplicationUser>
+          <ApplicationUser ></ApplicationUser>
         </v-col>
       </v-row>
-      <v-row v-show="where == 'Administration_role' ">
+      <v-row v-show="where == 'Role' ">
         <v-col  cols="12">
-          <AdministrationRole ></AdministrationRole>
+          <Role ></Role>
         </v-col>
       </v-row>
       <v-row >
@@ -30,16 +30,16 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-form>
-                    <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
-                    <v-text-field v-model="AccountRegistrationData.Address"  label="Address"   type="text" />
-                    <v-select class="mt-4"  :items="Designations" v-model="AccountRegistrationData.Designation"  label="Designation" dense ></v-select> 
-                    <v-text-field v-model="AccountRegistrationData.Password"  label="Password"   type="password" /> 
-                    <v-text-field v-model="AccountRegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
+                    <v-text-field v-model="RegistrationData.Email"  label="Email"   type="text" /> 
+                    <v-text-field v-model="RegistrationData.Address"  label="Address"   type="text" />
+                    <v-select class="mt-4"  :items="Designations" v-model="RegistrationData.Designation"  label="Designation" dense ></v-select> 
+                    <v-text-field v-model="RegistrationData.Password"  label="Password"   type="password" /> 
+                    <v-text-field v-model="RegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer />
-                  <v-btn color="primary" @click="AccountRegistrationDataSend()">Register</v-btn>
+                  <v-btn color="primary" @click="Registration()">Register</v-btn>
                 </v-card-actions>
             </v-card>
           </v-dialog>
@@ -53,17 +53,17 @@
 </template>
 
 <script>
-import AdministrationApplicationUser from './AdministrationComponents/Administration_ApplicationUser.vue'
-import AdministrationRole from './AdministrationComponents/Administration_role.vue'
+import ApplicationUser from './ApplicationUser.vue'
+import Role from './Role.vue'
 
 
 export default {
-    name:'Administration_index',
+    name:'Template',
     data(){
       return{
-           where:'Administration_ApplicationUser',
+           where:'ApplicationUser',
            dialog:false,
-           AccountRegistrationData : {
+           RegistrationData : {
               Email:"",
               Address:"",
               Designations:"",
@@ -76,8 +76,8 @@ export default {
       }
     },
     components: {
-      AdministrationApplicationUser,
-      AdministrationRole,
+      ApplicationUser,
+      Role,
       
     },
     created(){
@@ -88,22 +88,22 @@ export default {
     },
     methods:{
      GoTo:function(_where){  this.where = _where  },
-     AccountRegistrationDataSend: function(){
+     Registration: function(){
       
-        var _AccountRegistrationData = this.AccountRegistrationData
+        var _RegistrationData = this.RegistrationData
       
-        if(this.AccountRegistrationData.Password == this.AccountRegistrationData.ConfirmPassword ){
-          this.$store.dispatch('AccountRegistrationDataSend' , _AccountRegistrationData )
+        if(this.RegistrationData.Password == this.RegistrationData.ConfirmPassword ){
+          this.$store.dispatch('Registration' , _RegistrationData )
           .then( response => {
             if(response != null){
-              this.$store.dispatch("getApplicationUsers").then(()=>{
+              this.$store.dispatch("GetUsers").then(()=>{
                   this.dialog=false
               })
             }
           })
           
         }else{ 
-          alert("Password Not Match") 
+          alert("Password and Confirmed Password Not Match") 
         }
       }
     }

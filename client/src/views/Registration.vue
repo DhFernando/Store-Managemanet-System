@@ -9,16 +9,16 @@
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field v-model="AccountRegistrationData.Email"  label="Email"   type="text" /> 
-                  <v-text-field v-model="AccountRegistrationData.Address"  label="Address"   type="text" /> 
-                  <v-select class="mt-4"  :items="Designations" v-model="AccountRegistrationData.Designation"  label="Designation" dense ></v-select> 
-                  <v-text-field v-model="AccountRegistrationData.Password"  label="Password"   type="password" /> 
-                  <v-text-field v-model="AccountRegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
+                  <v-text-field v-model="RegistrationData.Email"  label="Email"   type="text" /> 
+                  <v-text-field v-model="RegistrationData.Address"  label="Address"   type="text" /> 
+                  <v-select class="mt-4"  :items="Designations" v-model="RegistrationData.Designation"  label="Designation" dense ></v-select> 
+                  <v-text-field v-model="RegistrationData.Password"  label="Password"   type="password" /> 
+                  <v-text-field v-model="RegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
                  </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary" @click="AccountRegistrationDataSend()">Register</v-btn>
+                <v-btn color="primary" @click="Registration()">Register</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -34,7 +34,7 @@ export default {
     name:'Login',
     data(){
       return{
-        AccountRegistrationData : {
+        RegistrationData : {
           Email:"",
           Address:"",
           Designations:"",
@@ -47,11 +47,11 @@ export default {
     },
     methods:{
    
-      AccountRegistrationDataSend: function(){
-        var _AccountRegistrationData = this.AccountRegistrationData
+      Registration: function(){
+        var _RegistrationData = this.RegistrationData
       
-        if(this.AccountRegistrationData.Password == this.AccountRegistrationData.ConfirmPassword ){
-          this.$store.dispatch('AccountRegistrationDataSend' , _AccountRegistrationData )
+        if(this.AccountRegistrationData.Password == this.RegistrationData.ConfirmPassword ){
+          this.$store.dispatch('Registration' , _RegistrationData )
           .then( res => {
             if(res != null){
               this.$router.push({ name : "Home" })
@@ -63,6 +63,12 @@ export default {
         }
       }
 
+    },
+    created(){
+      if(localStorage.getItem("access_token") != null){
+        alert('you online')
+        this.$router.push({path:'/'})
+      }
     }
 }
 </script>

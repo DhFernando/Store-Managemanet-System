@@ -19,13 +19,13 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="ApplicationUser in ApplicationUsers" :key="ApplicationUser.id" >
+                            <tr v-for="ApplicationUser in Users" :key="ApplicationUser.id" >
                               <td>{{ApplicationUser.id}}</td>
                               <td>{{ApplicationUser.designation}}</td>
                               <td>{{ApplicationUser.email}}</td>
                               <td>
-                                <v-icon color="green" @click.stop="dialog = true" @click="getApplicationUser(ApplicationUser.id)">mdi-file-find</v-icon> |
-                                <v-icon @click="deleteApplicationUser(ApplicationUser.id)" color="error">mdi-delete-forever</v-icon> 
+                                <v-icon color="green" @click.stop="dialog = true" @click="GetUser(ApplicationUser.id)">mdi-file-find</v-icon> |
+                                <v-icon @click="DeleteUser(ApplicationUser.id)" color="error">mdi-delete-forever</v-icon> 
                                </td>
                             </tr>
                           </tbody>
@@ -41,16 +41,16 @@
         <v-dialog v-model="dialog"  max-width="590" >
           <v-card>
               <v-card-title class="headline"> 
-                {{ApplicationUser.userName}}  # <v-btn color="primary" @click.stop="dialog2 = true" @click="GetUserRoles(ApplicationUser.id)" class="ml-12" tile >Edit Role</v-btn> 
+                {{User.userName}}  # <v-btn color="primary" @click.stop="dialog2 = true" @click="GetUserRoles(User.id)" class="ml-12" tile >Edit Role</v-btn> 
               </v-card-title>
               <hr>
               <v-card-text class="py-4">
                   <v-form ref="form">
-                      <v-text-field label="User Id" required disabled v-model="ApplicationUser.id" ></v-text-field>
-                      <v-text-field  required label="User Name"  v-model="ApplicationUser.userName"></v-text-field>
-                      <v-text-field  label="Email" required v-model="ApplicationUser.email"></v-text-field>
-                      <v-text-field v-model="ApplicationUser.address"  label="Address"   type="text" /> 
-                      <v-select class="mt-4"  :items="Designations" v-model="ApplicationUser.designation"  label="Designation" dense ></v-select>
+                      <v-text-field label="User Id" required disabled v-model="User.id" ></v-text-field>
+                      <v-text-field  required label="User Name"  v-model="User.userName"></v-text-field>
+                      <v-text-field  label="Email" required v-model="User.email"></v-text-field>
+                      <v-text-field v-model="User.address"  label="Address"   type="text" /> 
+                      <v-select class="mt-4"  :items="Designations" v-model="User.designation"  label="Designation" dense ></v-select>
                       <v-btn color="primary" class="mr-4"  > Edit ApplicationUser </v-btn>
                       <v-btn color="error" class="mr-2" @click.stop="dialog = !true">Cancle</v-btn>
                     </v-form>
@@ -63,7 +63,7 @@
         <v-dialog v-model="dialog2"  max-width="590" >
           <v-card>
               <v-card-title class="headline"> 
-                {{ApplicationUser.userName}}  #  
+                {{User.userName}}  #  
               </v-card-title>
               <hr>
               <v-card-text class="py-4">
@@ -106,61 +106,46 @@
 </template>
 
 <script>
-// import axios from "axios";
+
 export default {
     name:'Administration_index',
-    props:['dialog3'],
     data(){
       return{
         dialog: false,
         dialog2: false,
-       
-        
-        ApplicationUser:{
-          id:null,
-          userName:null,
-          email:null,
-          designation:null,
-          address:null
-        },
+      
+        User:[],
         
         Designations: ['Customer', 'Manager', 'Supervisor', 'CEO' , 'Salesman'],
-        UserRoles:[],
-
-
+        UserRoles:[]
         
-         
       }
     },
     components: {
     
     },
     created(){
-      this.$store.dispatch("getApplicationUsers")
+      this.$store.dispatch("GetUsers")
     },
     computed: {
-       ApplicationUsers(){
+       Users(){
        return this.$store.getters.ApplicationUsers
      }
     },
     methods:{
-      getApplicationUser:function(ApplicationUser_id){
-        this.$store.dispatch("getApplicationUser",ApplicationUser_id).then((res)=>{
+      GetUser:function(ApplicationUser_id){
+        this.$store.dispatch("GetUser",ApplicationUser_id).then((res)=>{
           if(res != null){
-            this.ApplicationUser.id = this.$store.getters.ApplicationUser.id
-            this.ApplicationUser.userName = this.$store.getters.ApplicationUser.userName
-            this.ApplicationUser.email = this.$store.getters.ApplicationUser.email
-            this.ApplicationUser.address = this.$store.getters.ApplicationUser.address
-            this.ApplicationUser.designation = this.$store.getters.ApplicationUser.designation
-          }
+            this.User = this.$store.getters.ApplicationUser
+           }
         })
       },
 
-      deleteApplicationUser:function(ApplicationUser_id){
-        this.$store.dispatch("deleteApplicationUser",ApplicationUser_id)
+      DeleteUser:function(ApplicationUser_id){
+        this.$store.dispatch("DeleteUser",ApplicationUser_id)
         .then(res=>{
           if(res != null){
-            this.$store.dispatch("getApplicationUsers")
+            this.$store.dispatch("GetUsers")
           }
         })
       },

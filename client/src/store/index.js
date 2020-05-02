@@ -43,13 +43,13 @@ export default new Vuex.Store({
     
   },
   actions: {
-    AccountRegistrationDataSend : (contex ,  _AccountRegistrationData ) => {  
+    Registration : (contex ,  _AccountRegistrationData ) => {  
      return new Promise((resolve , reject)=>{
         axios.post("https://localhost:44361/account/Register", _AccountRegistrationData)
         .then(res => {
             if(res.data != null ){ 
                 const token = res.data
-                contex.commit('AccountRegistrationDataSend',token)
+                contex.commit('StoreAccessToken',token)
                 resolve("Done")
             }
           }).catch( error => {
@@ -61,9 +61,9 @@ export default new Vuex.Store({
   
     },
 
-    destroyToken:(contex)=>{
+    DestroyToken:(contex)=>{
       return new Promise((resolve)=>{
-        contex.commit("destroyToken")
+        contex.commit("DestroyToken")
         resolve("done")
       })
     },
@@ -72,27 +72,27 @@ export default new Vuex.Store({
         axios.get("https://localhost:44361/account/GetProfile", {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem("access_token") }
         }).then(res => {
-         contex.commit("GetProfile" , res.data)
+         contex.commit("StoreProfile" , res.data)
          
         }) 
        
       })
     },
 
-    getApplicationUsers:(contex ) =>{
+    GetUsers:(contex ) =>{
       return new Promise((resolve)=>{
         axios.get("https://localhost:44361/Administration/GetAllApplicationUsers",{
           headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
         }).then(res => {
           if(res.data != null ){ 
             
-            contex.commit("getApplicationUsers", res.data )
+            contex.commit("StoreApplicationUsers", res.data )
             resolve("done")
            }
         })
       })
     },
-    getApplicationUser:(contex,ApplicationUser_id)=>{
+    GetUser:(contex,ApplicationUser_id)=>{
       var _id = {id:ApplicationUser_id}
       
       return new Promise((resolve)=>{
@@ -100,15 +100,14 @@ export default new Vuex.Store({
             headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
           }).then(res => {
           if(res.data != null){
-            contex.commit("getApplicationUser" , res.data )
-            console.log(res.data)
+            contex.commit("StoreUser" , res.data )
             resolve("Success")
           }
         })
       })
     },
 
-    deleteApplicationUser:(contex,ApplicationUser_id)=>{
+    DeleteUser:(contex,ApplicationUser_id)=>{
       var data = {
         id:ApplicationUser_id
       }
@@ -130,7 +129,7 @@ export default new Vuex.Store({
             headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
           }).then(res => {
           if(res.data != null){
-            contex.commit("GetRoleWithUsers",res.data)
+            contex.commit("StoreRoleWithUsers",res.data)
             resolve(res.data)
           }
         })
@@ -145,13 +144,13 @@ export default new Vuex.Store({
           }).then(res=>{
             if(res.data != null){
               resolve("Success")
-              contex.commit("GetUserRoles" , res.data)
+              contex.commit("StoreUserRoles" , res.data)
             }
           })
       })
     },
     UpdateUserRoles:(contex , _userRoles)=>{
-      console.log(_userRoles)
+     
       return new Promise((resolve)=>{
         var url = "https://localhost:44361/Administration/UpdateUserRoles/"
         axios.post(url , _userRoles ,{
@@ -167,23 +166,41 @@ export default new Vuex.Store({
 
   mutations: {
 
-    AccountRegistrationDataSend:(state , token ) =>{
+    StoreAccessToken:(state , token ) =>{
       if(state.token == null){
           localStorage.setItem('access_token',token)
          state.token = token
       }
     },
 
-    destroyToken:(state) =>{
+    DestroyToken:(state) =>{
       localStorage.removeItem("access_token")
       state.token = null
     },
-    GetProfile:(state , data)=>{
+    StoreProfile:(state , data)=>{
       state.userProfile = data
+    },
+    StoreApplicationUsers:(state , data) =>{
+      state.ApplicationUsers = data
+    },
+    StoreUser:(state , data)=>{
+      state.ApplicationUser = []
+      state.ApplicationUser = data
+    },
+
+    StoreRoleWithUsers:(state,data)=>{
+      state.RoleWithUsers = data
+    },
+
+    StoreUserRoles:(state , data)=>{
+      state.UserRoles = data
+    },
+    makeReloadGetAllEmployeeFalse : (state) => {
+      state.reloadGetAllEmployee = false
     },
 
     
-    
+    // --------------------------------------------------------- // 
     getAllEmployee:(state)=>{
       axios.get("https://localhost:44361/").then(res=>{
         state.Employees = res.data;
@@ -220,37 +237,9 @@ export default new Vuex.Store({
         else{alert("Sorry")}
       })
     },
+    //-----------------------------------------------------------------//
 
-    getApplicationUsers:(state , data) =>{
-      state.ApplicationUsers = data
-    },
-    getApplicationUser:(state , data)=>{
-      state.ApplicationUser = []
-      state.ApplicationUser = data
-    },
-    deleteApplicationUser:(state,ApplicationUser_id)=>{
-      var data = {
-        id:ApplicationUser_id
-      }
-      axios.post("https://localhost:44361/Administration/DeleteApplicationUser", data,{
-          headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + localStorage.getItem("access_token") }
-        }).then(res => {
-        if(res.data != null){
-          console.log(res.data)
-        }
-      })
-
-    },
-    GetRoleWithUsers:(state,data)=>{
-      state.RoleWithUsers = data
-    },
-
-    GetUserRoles:(state , data)=>{
-      state.UserRoles = data
-    },
-    makeReloadGetAllEmployeeFalse : (state) => {
-      state.reloadGetAllEmployee = false
-    }
+    
   },
   
 })

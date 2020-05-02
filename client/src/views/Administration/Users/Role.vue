@@ -39,12 +39,11 @@ export default {
     name:'Administration_index',
     data(){
       return{
-          // RoleWithUsers:[] 
+        
       }
     },
     created(){
       this.$store.dispatch("GetRoleWithUsers")
-      
     },
     computed: {
       RoleWithUsers(){

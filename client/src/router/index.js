@@ -1,19 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Home from '../views/Home.vue'
-
-import registration from '../views/Registration.vue'
+import Registration from '../views/Registration.vue'
 import profile_index from '../views/profile/profile_index.vue'
-import administration_index from '../views/Administration/Administration_index.vue'
-
+import Template from '../views/Administration/Users/Template.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/registration', name: 'Login', component: registration },
+  { path: '/Registration', name: 'Registration', component: Registration },
   { path: '/profile/profile_index', name: 'profile_index', component: profile_index },
-  { path: '/Administration/Administration_index', name: 'Administration_index', component: administration_index },
+ 
+  { path: '/Administration/User/', name: 'Template', component: Template },
 
 ]
 
