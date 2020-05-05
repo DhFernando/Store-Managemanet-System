@@ -15,7 +15,7 @@ import Header from './components/layout/Header'
 export default {
   name: 'App',
   created(){
-    if(this.$store.getters.LogedIn != null){
+    if(this.$store.getters.LogedInCheck != null){
       this.$store.dispatch("GetProfile")
     }
   },

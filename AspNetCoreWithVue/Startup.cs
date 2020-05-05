@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AspNetCoreWithVue.Models;
 using AspNetCoreWithVue.Models.Account;
+using AspNetCoreWithVue.Models.Advertistment;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -75,6 +76,7 @@ namespace AspNetCoreWithVue
             });
 
             services.AddScoped<IEmployee, SQLEmployee>();
+            services.AddScoped<IAdvertistment, SQLAdvertistment>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

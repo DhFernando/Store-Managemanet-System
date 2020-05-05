@@ -15,6 +15,7 @@
                   <v-text-field v-model="RegistrationData.Password"  label="Password"   type="password" /> 
                   <v-text-field v-model="RegistrationData.ConfirmPassword"  label="Confirm Password"   type="password" /> 
                  </v-form>
+            
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
@@ -48,9 +49,9 @@ export default {
     methods:{
    
       Registration: function(){
-        var _RegistrationData = this.RegistrationData
+        const _RegistrationData = this.RegistrationData
       
-        if(this.AccountRegistrationData.Password == this.RegistrationData.ConfirmPassword ){
+        if(this.RegistrationData.Password == this.RegistrationData.ConfirmPassword ){
           this.$store.dispatch('Registration' , _RegistrationData )
           .then( res => {
             if(res != null){

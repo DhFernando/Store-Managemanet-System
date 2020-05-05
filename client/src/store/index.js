@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
     
    token: localStorage.getItem("access_token") || null ,
-   userProfile:[],
+   userProfile:null,
    ApplicationUsers:[],
    ApplicationUser : [],
    RoleWithUsers:[],
@@ -32,7 +32,7 @@ export default new Vuex.Store({
     reloadGetAllEmployee : (state) => { return state.reloadGetAllEmployee },
     getEmployee:(state)=>{ return state.getEmployee },
     editbleEmployee:(state)=>{ return state.editbleEmployee },
-    LogedIn:(state) =>{ return state.token !== null},
+    LogedInCheck:(state) =>{ return state.token !== null},
     userProfile:(state)=>{ return state.userProfile },
     ApplicationUsers:(state)=>{return state.ApplicationUsers},
     ApplicationUser:(state)=>{ return state.ApplicationUser },
@@ -44,6 +44,7 @@ export default new Vuex.Store({
   },
   actions: {
     Registration : (contex ,  _AccountRegistrationData ) => {  
+      console.log(_AccountRegistrationData)
      return new Promise((resolve , reject)=>{
         axios.post("https://localhost:44361/account/Register", _AccountRegistrationData)
         .then(res => {
@@ -68,11 +69,12 @@ export default new Vuex.Store({
       })
     },
     GetProfile:(contex)=>{
-      return new Promise(()=>{
+      return new Promise((resolve)=>{
         axios.get("https://localhost:44361/account/GetProfile", {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem("access_token") }
         }).then(res => {
          contex.commit("StoreProfile" , res.data)
+         resolve("done")
          
         }) 
        

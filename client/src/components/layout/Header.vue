@@ -5,6 +5,7 @@
         <h2>DH Store</h2>
       </div>
       <v-btn class="ml-5 " text  to="/">Home</v-btn>
+      <v-btn class="ml-5 " text  to="/Advertistment">Advertistment</v-btn>
       <v-btn class="ml-5 " text  to="/profile/profile_index">Profile</v-btn>
   
 
@@ -19,7 +20,7 @@
           <v-list-item  to="/Administration/User/" >
             <v-list-item-title>Users</v-list-item-title>
           </v-list-item>
-          <v-list-item >
+          <v-list-item to="/Administration/Advertistment/" >
             <v-list-item-title>Advertistment</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -52,7 +53,7 @@ export default {
     
     computed:{
       LogedIn(){
-        return this.$store.getters.LogedIn
+        return this.$store.getters.LogedInCheck
       }
     },
     methods:{

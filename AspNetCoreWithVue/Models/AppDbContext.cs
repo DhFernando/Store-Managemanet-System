@@ -1,4 +1,5 @@
 ﻿using AspNetCoreWithVue.Models.Account;
+using AspNetCoreWithVue.Models.Advertistment;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,7 @@ namespace AspNetCoreWithVue.Models
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)  {  }
 
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Categories> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

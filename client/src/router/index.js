@@ -5,6 +5,10 @@ import Home from '../views/Home.vue'
 import Registration from '../views/Registration.vue'
 import profile_index from '../views/profile/profile_index.vue'
 import Template from '../views/Administration/Users/Template.vue'
+import AdvertistmentTemplate from '../views/Advertistment/Template.vue'
+
+import Advertistment_index from '../views/Advertistment/index.vue'
+
 
 Vue.use(VueRouter)
 
@@ -14,6 +18,10 @@ const routes = [
   { path: '/profile/profile_index', name: 'profile_index', component: profile_index },
  
   { path: '/Administration/User/', name: 'Template', component: Template },
+  { path: '/Administration/Advertistment/', name: 'AdvertistmentTemplate', component: AdvertistmentTemplate },
+
+  { path: '/Advertistment/', name: 'Advertistment_index', component: Advertistment_index },
+
 
 ]
 

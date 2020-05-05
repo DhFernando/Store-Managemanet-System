@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20200415114602_InitialMigration.Designer.cs" />
     <Compile Remove="Migrations\20200428154932_Extend_IdentityUser.cs" />
     <Compile Remove="Migrations\20200428154932_Extend_IdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20200505114358_Categories.cs" />
+    <Compile Remove="Migrations\20200505114358_Categories.Designer.cs" />
+    <Compile Remove="Migrations\20200505120115_Category2.cs" />
+    <Compile Remove="Migrations\20200505120115_Category2.Designer.cs" />
   </ItemGroup>
 
 
