@@ -13,9 +13,22 @@ namespace AspNetCoreWithVue.Models.Advertistment
             this.context = context;
         }
 
+        
         public IEnumerable<Categories> GetAllCategories()
         {
             return context.Categories;
+        }
+
+        public IEnumerable<AdvertistmentModel> GetAllAdvertistments()
+        {
+            return context.Advertistment;
+        }
+
+        public AdvertistmentModel Add(AdvertistmentModel advertistment)
+        {
+            context.Add(advertistment);
+            context.SaveChanges();
+            return advertistment;
         }
     }
 }

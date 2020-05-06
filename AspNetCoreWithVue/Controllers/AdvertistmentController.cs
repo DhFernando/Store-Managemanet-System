@@ -13,16 +13,39 @@ namespace AspNetCoreWithVue.Controllers
     public class AdvertistmentController : Controller
     {
         IAdvertistment _advertistment;
-        public AdvertistmentController(IAdvertistment advertistment)
+        public AdvertistmentController(IAdvertistment advertistment )
         {
             this._advertistment = advertistment;
         }
 
-        public JsonResult Index()
+        [HttpGet]
+        public JsonResult GetAllCategories()
         {
             return Json(_advertistment.GetAllCategories());
         }
 
+
+        [HttpPost]
+        public JsonResult Add([FromBody]AdvertistmentModel model)
+        {
+            AdvertistmentModel advertistment = new AdvertistmentModel
+            {
+                Item = model.Item,
+                MainCategory = model.MainCategory,
+                SubCategory = model.SubCategory,
+                Price = model.Price,
+                CreatorId = model.CreatorId
+            };
+            return Json(_advertistment.Add(advertistment));
+
+            
+        }
+
+        [HttpGet]
+        public JsonResult GetAllAdvertistments()
+        {   
+            return Json(_advertistment.GetAllAdvertistments());
+        }
 
     }
 }

@@ -7,7 +7,8 @@
               <v-btn class="ml-5 " text @click.stop="dialog = true" >Create Advertistment</v-btn>
             </div>
             <hr />
-            {{MainCategories}}
+            
+            {{AdvertistmentDetails}}
         </v-col>
       </v-row>
       <v-row>
@@ -30,22 +31,19 @@
                           <v-col cols="12">
                             <v-row>
                               <v-col cols="4">
-                                <v-select v-on:change="SetSubCategories"  :items="MainCategories"  :rules="[v => !!v || 'Item is required']"
+                                <v-select v-on:change="SetSubCategories" v-model="AdvertistmentDetails.MainCategory" :items="MainCategories"  :rules="[v => !!v || 'Item is required']"
                                 label="Main Category" required ></v-select>
                               </v-col>
                               <v-col cols="4">
-                                <v-select  :items="MainCategories"  :rules="[v => !!v || 'Item is required']"
+                                <v-select  :items="SubCategories" v-model="AdvertistmentDetails.SubCategory" :rules="[v => !!v || 'Item is required']"
                                 label="Sub Category" required ></v-select>
                               </v-col>
-                              <v-col cols="4">
-                                <v-select  :items="MainCategories"  :rules="[v => !!v || 'Item is required']"
-                                label="Group" required ></v-select>
-                              </v-col>
+                              
                             </v-row>
                             <v-row>
                               <v-col cols="12"> 
-                                <v-text-field   label="Item"   type="text" /> 
-                                <v-text-field   label="Price"   type="text" /> 
+                                <v-text-field  v-model="AdvertistmentDetails.Item" label="Item"   type="text" /> 
+                                <v-text-field  v-model="AdvertistmentDetails.Price" label="Price"   type="text" /> 
                               </v-col>
                             </v-row>
                             
@@ -82,13 +80,29 @@ export default {
             picture:'addicon.png',
             state:false
            },
+        CategoryArray:[],
         MainCategories: [],
+        SubCategories: [],
+        AdvertistmentDetails:{
+          Item:null,
+          Price:null,
+          MainCategory:null,
+          SubCategory:null,
+          creatorId:null
+        }
       }
     },
     
     methods: {
       CreateAdd:function(){
-        alert("Created")
+
+        const _AdvertistmentDetails = this.AdvertistmentDetails
+        console.log(_AdvertistmentDetails)
+        axios.post("https://localhost:44361/Advertistment/Add", _AdvertistmentDetails).then(res => {
+          if(res != null){
+            alert("Done")
+          }
+        })
       },
       openUpload() {
           document.getElementById('file-field').click()
@@ -107,23 +121,39 @@ export default {
             reader.readAsDataURL(files[0])
       },
       SetSubCategories(e){
-        alert(e.target.result)
+        this.SubCategories = []
+        this.CategoryArray.forEach(Category => {
+          if(Category.mainCategory == e){
+            this.SubCategories.push(Category.categoryName)
+          }
+        });
       }
       
     },
     created(){
-      axios.get("https://localhost:44361/Advertistment/Index", {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem("access_token") }
-        }).then(res => {
-          // this.MainCategories = res.data
-          res.data.forEach(Category => {
-            if(Category.categoryType == "MainCategory"){
-              this.MainCategories.push(Category.categoryName)
-            }
-          });
-        })
+      // store creatorId
+      if(this.$store.getters.userProfile == null){
+        if(this.$store.getters.LogedInCheck != null){
+          this.$store.dispatch("GetProfile")
+          .then(()=>{
+            this.AdvertistmentDetails.creatorId = this.$store.getters.userProfile.id
+          })
+        }
+      }else{
+        this.AdvertistmentDetails.creatorId = this.$store.getters.userProfile.id
+      }
 
-        
+
+      axios.get("https://localhost:44361/Advertistment/GetAllCategories", {
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem("access_token") }
+      }).then(res => {
+        this.CategoryArray = res.data
+        res.data.forEach(Category => {
+          if(Category.categoryType == "MainCategory"){
+            this.MainCategories.push(Category.categoryName)
+          }
+        });
+      })  
     }
 }
 </script>

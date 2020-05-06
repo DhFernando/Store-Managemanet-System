@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20200505114358_Categories.Designer.cs" />
     <Compile Remove="Migrations\20200505120115_Category2.cs" />
     <Compile Remove="Migrations\20200505120115_Category2.Designer.cs" />
+    <Compile Remove="Migrations\20200505151900_Advertistment.cs" />
+    <Compile Remove="Migrations\20200505151900_Advertistment.Designer.cs" />
   </ItemGroup>
 
 

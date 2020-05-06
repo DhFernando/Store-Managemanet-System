@@ -8,5 +8,8 @@ namespace AspNetCoreWithVue.Models.Advertistment
     public interface IAdvertistment
     {
         IEnumerable<Categories> GetAllCategories();
+        AdvertistmentModel Add(AdvertistmentModel advertistment);
+
+        IEnumerable<AdvertistmentModel> GetAllAdvertistments();
     }
 }

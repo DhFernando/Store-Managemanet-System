@@ -1,25 +1,23 @@
 <template>
   <div>
-        <v-carousel >
-            <v-carousel-item
-            v-for="(item,i) in items"
-            :key="i"
-            :src="item.src"
-            reverse-transition="fade-transition"
-            transition="fade-transition"
-            ></v-carousel-item>
-        </v-carousel>
-   <v-parallax   height="700" dark src="https://thumbs.dreamstime.com/b/cottage-cheese-cake-berry-jam-coffee-dark-blue-background-top-view-flat-lying-cottage-cheese-cake-berry-jam-142232982.jpg" >
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col class="text-center black" cols="12">
-        <h1 class="display-1 font-weight-thin mb-4">Welcome To DH Store</h1>
-        <h4 class="subheading">Feel Free To Get Your Stuff today!</h4>
-      </v-col>
-    </v-row>
-  </v-parallax>
+      <v-carousel >
+          <v-carousel-item
+          v-for="(item,i) in items"
+          :key="i"
+          :src="item.src"
+          reverse-transition="fade-transition"
+          transition="fade-transition"
+          ></v-carousel-item>
+      </v-carousel>
+
+      <v-parallax   height="700" dark src="https://thumbs.dreamstime.com/b/cottage-cheese-cake-berry-jam-coffee-dark-blue-background-top-view-flat-lying-cottage-cheese-cake-berry-jam-142232982.jpg" >
+        <v-row align="center" justify="center" >
+          <v-col class="text-center black" cols="12">
+            <h1 class="display-1 font-weight-thin mb-4">Welcome To DH Store</h1>
+            <h4 class="subheading">Feel Free To Get Your Stuff today!</h4>
+          </v-col>
+        </v-row>
+      </v-parallax>
   </div>
 </template>
 

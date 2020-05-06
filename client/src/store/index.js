@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
 
-
-// import { stat } from 'fs';
 Vue.use(Vuex)
 
 export default new Vuex.Store({

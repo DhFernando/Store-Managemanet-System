@@ -3,6 +3,7 @@
     <v-row>
         <v-col cols="12" class="pt-0">
             <carousel></carousel>
+            <MainAddvertistmentsList></MainAddvertistmentsList>
         </v-col>
     </v-row>
   </div>
@@ -10,10 +11,12 @@
 
 <script>
 import carousel from '@/views/Advertistment/carousel'
+import MainAddvertistmentsList from '@/views/Advertistment/MainAddvertistmentsList'
 export default {
     name:'index',
      components: {
-      carousel
+      carousel,
+      MainAddvertistmentsList
     },
     data(){
       return{

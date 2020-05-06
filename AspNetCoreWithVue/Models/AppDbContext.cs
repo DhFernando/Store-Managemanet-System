@@ -15,6 +15,7 @@ namespace AspNetCoreWithVue.Models
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Categories> Categories { get; set; }
+        public DbSet<AdvertistmentModel> Advertistment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
