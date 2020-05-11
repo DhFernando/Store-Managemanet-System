@@ -18,6 +18,8 @@ export default {
     if(this.$store.getters.LogedInCheck != null){
       this.$store.dispatch("GetProfile")
     }
+
+    alert(this.$store.state.reloadGetAllEmployee)
   },
   
   components: {
