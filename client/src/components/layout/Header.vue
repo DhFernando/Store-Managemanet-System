@@ -36,6 +36,10 @@
         <span class="mr-2">Register</span>
         <v-icon>mdi-lock</v-icon>
       </v-btn>
+      <v-btn color="yellow" v-show="LogedIn" text>
+        <v-icon>mdi-cart</v-icon>
+        <span class="ml-2">Rs {{Total}}</span>
+      </v-btn>
       <v-btn v-show="LogedIn" @click="DestroyToken" text>
         <span class="mr-2">LogOut</span>
         <v-icon>mdi-lock</v-icon>
@@ -54,6 +58,9 @@ export default {
     computed:{
       LogedIn(){
         return this.$store.getters.LogedInCheck
+      },
+      Total(){
+        return this.$store.getters.Total
       }
     },
     methods:{

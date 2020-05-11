@@ -22,7 +22,10 @@ export default new Vuex.Store({
    ApplicationUser : [],
    RoleWithUsers:[],
    UserRoles:[],
-   newUserRegistrationDialog:false
+   newUserRegistrationDialog:false,
+
+   Total:0,
+   Cart:null
     
   },
   getters: {
@@ -36,7 +39,10 @@ export default new Vuex.Store({
     ApplicationUser:(state)=>{ return state.ApplicationUser },
     RoleWithUsers:(state)=>{ return state.RoleWithUsers },
     UserRoles:(state)=>{ return state.UserRoles },
-    newUserRegistrationDialog:(state)=>{return state.newUserRegistrationDialog}
+    newUserRegistrationDialog:(state)=>{return state.newUserRegistrationDialog},
+
+    Total:(state) =>{ return state.Total},
+    Cart:(state) => { return state.Cart }
 
     
   },
@@ -161,6 +167,10 @@ export default new Vuex.Store({
           }
         })
       })
+    },
+
+    AddToCart:(contex , Advertistment) =>{
+      contex.commit('UpdateCart',Advertistment)
     }
   },
 
@@ -198,47 +208,10 @@ export default new Vuex.Store({
     makeReloadGetAllEmployeeFalse : (state) => {
       state.reloadGetAllEmployee = false
     },
-
-    
-    // --------------------------------------------------------- // 
-    getAllEmployee:(state)=>{
-      axios.get("https://localhost:44361/").then(res=>{
-        state.Employees = res.data;
-      });
+    UpdateCart : (state , Advertistment)=>{
+      state.Total = state.Total + parseInt(Advertistment.price)
+      state.Cart.push(Advertistment)
     },
-
-    updateEmployee:(state) => {
-      alert ( state.editbleEmployee.Name )
-    },
-
-    deleteEmployee : (state , { _id }) => {
-     axios.post("https://localhost:44361/home/DeleteEmployee", _id ,{
-        headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + state.token }
-      }).then(res => {
-        if(res.data != null ){ state.reloadGetAllEmployee = true }
-      })
-    },
-
-    addEmployee : (state, { _newEmployee }) => {
-      axios.post("https://localhost:44361/home/add", _newEmployee).then(res => {
-        if(res.data != null ){ state.reloadGetAllEmployee = true }
-      })
-    },
-
-    getEmployee : (state , { url }) => {
-      axios.get(url).then(res => {
-        if(res.data != null){
-          state.editbleEmployee.Id = res.data.id;
-          state.editbleEmployee.Name = res.data.name;
-          state.editbleEmployee.BirthDay = res.data.birthDay;
-          state.editbleEmployee.Address = res.data.address;
-          state.editbleEmployee.Department = res.data.department;
-        }
-        else{alert("Sorry")}
-      })
-    },
-    //-----------------------------------------------------------------//
-
     
   },
   

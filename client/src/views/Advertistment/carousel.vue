@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-carousel >
+      <!-- <v-carousel >
           <v-carousel-item
           v-for="(item,i) in items"
           :key="i"
@@ -8,7 +8,7 @@
           reverse-transition="fade-transition"
           transition="fade-transition"
           ></v-carousel-item>
-      </v-carousel>
+      </v-carousel> -->
 
       <v-parallax   height="700" dark src="https://thumbs.dreamstime.com/b/cottage-cheese-cake-berry-jam-coffee-dark-blue-background-top-view-flat-lying-cottage-cheese-cake-berry-jam-142232982.jpg" >
         <v-row align="center" justify="center" >
