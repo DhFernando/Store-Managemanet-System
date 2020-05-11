@@ -8,10 +8,9 @@
         </v-col>
     </v-row>
     <v-row v-if="Advertistments != null">
-      {{Advertistments}}
-      <!-- <div class="mx-10">
+      <div class="mx-10">
         <div class="d-flex flex-wrap" flat tile >
-            <v-card style="width:23%; height:420px" class="pa-0 mx-3 mb-5" v-for="Advertistment in  Advertistments" :key="Advertistment.id"  outlined tile >
+            <v-card style="width:23%; height:420px" class="pa-0 mx-3 mb-5" v-for="Advertistment in  FilltedAdvertistments" :key="Advertistment.id"  outlined tile >
                 <v-img class="white--text align-end" height="150px" src="" ></v-img>
                 <hr color="grey">
                 <v-card-title>{{Advertistment.item}}</v-card-title>
@@ -28,7 +27,8 @@
                 </v-card-actions>
             </v-card>
         </div>
-      </div> -->
+      </div>
+     
     </v-row>
   </div>
 </template>
@@ -54,14 +54,19 @@ export default {
         }) 
     },
     methods:{
-      // AddToCart(Advertistment){
-      //   this.$store.dispatch('AddToCart',Advertistment)
-      // }
+     
     },
     computed: {
-      // FilltedAdvertistments(){
-      //   if()
-      // }
+      FilltedAdvertistments(){
+        const _advertistments = []
+        this.Advertistments.forEach(advertistment => {
+          if(advertistment.item.toLowerCase().indexOf(this.search.toLowerCase()) != -1){
+            _advertistments.push(advertistment)
+          }
+          
+        });
+        return _advertistments
+      }
     },
 }
 </script>
