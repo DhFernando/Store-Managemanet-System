@@ -1,13 +1,11 @@
 <template>
   <div >
-    
     <v-row>
         <v-col cols="12">
-          
-            All Pastry
-          
+          <h2 class="ml-10">Pastry Items</h2>
         </v-col>
     </v-row>
+
     <v-row v-if="Advertistments != null">
       <div class="mx-10">
         <div class="d-flex flex-wrap" flat tile >

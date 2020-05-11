@@ -2,9 +2,7 @@
   <div >
     <v-row>
         <v-col cols="12">
-          
-            Grocery Advertistment 
-          
+          <h2 class="ml-10">Grocery Items</h2>
         </v-col>
     </v-row>
     <v-row v-if="Advertistments != null">
