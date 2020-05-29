@@ -72,10 +72,10 @@
                         <tr v-for="CartItem in Cart" :key="CartItem.id">
                           <td  > imahe</td>
                           <td  > {{CartItem.item}} </td>
-                          <td  > {{CartItem.price}} | {{CartItem.qty}} </td>
+                          <td  > {{CartItem.price}} * {{CartItem.qty}} = {{CartItem.price*CartItem.qty}} </td>
                           <td>
-                            <v-btn small  color="primary" tile outlined> + </v-btn> 9 <v-btn small  color="primary" tile outlined> -</v-btn> |
-                            <v-icon color="green" >mdi-file-find</v-icon> |
+                            <span > <v-icon  color="purple" class="mr-5" @click="ChnageQty('Plus',CartItem.id)" >mdi-plus</v-icon> 9 <v-icon class="mx-5" color="purple" @click="ChnageQty('minus' , CartItem.id)">mdi-minus</v-icon></span>  |
+                            
                             <v-icon color="error">mdi-delete-forever</v-icon> 
                           </td>
                         </tr>
@@ -136,6 +136,14 @@ export default {
             this.$router.push({ name : "Home" })
           }
         })
+      },
+      ChnageQty:function(qtyType , itemId){
+        // alert(itemId)
+        const data = {
+          "qtyType" : qtyType,
+          "itemId" : itemId
+        }
+        this.$store.commit('ChnageItemQty' , data )
       }
     }
 }

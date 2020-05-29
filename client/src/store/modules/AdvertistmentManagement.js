@@ -20,16 +20,7 @@
 
   const mutations = {
     AddItemToCart : (state , item)=>{
-      // var s = state.Cart
-      //  var newItem = {
-      //   id:item.id,
-      //   item:item.item,
-      //   price:item.price,
-      //   mainCategory:item.mainCategory,
-      //   subCategory:item.subCategory,
-      //   creatorId:item.creatorId
-      //  }
-
+      
       state.Total = state.Total + parseInt(item.price)
       if(state.Cart.indexOf(item) == -1){
         
@@ -43,6 +34,17 @@
      
       
     },
+
+    ChnageItemQty:(state , data) =>{
+      
+      state.Cart.forEach(item => {
+        if(data.qtyType == "Plus" && item.id == data.itemId){
+          item.qty++
+        }else if(data.qtyType == 'minus' && item.id == data.itemId){
+          item.qty--
+        }
+      });
+    }
     
   };
 

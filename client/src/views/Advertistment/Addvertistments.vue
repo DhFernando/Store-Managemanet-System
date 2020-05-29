@@ -1,7 +1,7 @@
 <template>
   <div >
     <v-row>
-      {{cart}}
+   
         <v-col cols="12">
           <h2 class="ml-10">{{Display}} Items</h2>
         </v-col>
