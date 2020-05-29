@@ -28,12 +28,12 @@ namespace AspNetCoreWithVue.Controllers
         public JsonResult GetAllApplicationUsers()
         {
             var users = userManager.Users;
-
+            
             return Json(users);
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize]  // shoud log to access this controller
         public JsonResult DeleteEmployee([FromBody]ApplicationUser data)
         {
 

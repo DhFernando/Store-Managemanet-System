@@ -14,3 +14,7 @@ G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\obj\Debug\n
 G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\obj\Debug\netcoreapp2.2\AspNetCoreWithVue.dll
 G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\obj\Debug\netcoreapp2.2\AspNetCoreWithVue.pdb
 G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\obj\Debug\netcoreapp2.2\AspNetCoreWithVue.csproj.CopyComplete
+G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\bin\Debug\netcoreapp2.2\appsettings.Development.json
+G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\bin\Debug\netcoreapp2.2\appsettings.json
+G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+G:\languages\web\C#\C# practical\AspNetCoreWithVue\AspNetCoreWithVue\obj\Debug\netcoreapp2.2\AspNetCoreWithVue.genruntimeconfig.cache

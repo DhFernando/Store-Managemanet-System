@@ -19,9 +19,6 @@ import axios from "axios";
    UserRoles:[],
    newUserRegistrationDialog:false,
 
-   Total:0,
-   Cart:null
-    
   };
 
   const getters = {
@@ -37,10 +34,7 @@ import axios from "axios";
     UserRoles:(state)=>{ return state.UserRoles },
     newUserRegistrationDialog:(state)=>{return state.newUserRegistrationDialog},
 
-    Total:(state) =>{ return state.Total},
-    Cart:(state) => { return state.Cart }
-
-    
+  
   };
 
   const actions = {
@@ -62,6 +56,28 @@ import axios from "axios";
       })
   
     },
+
+    Login : (contex ,  _LoginData ) => {  
+     console.log(_LoginData);
+     
+     return new Promise((resolve , reject)=>{
+        axios.post("https://localhost:44361/account/Login", _LoginData)
+        .then(res => {
+            if(res.data != null ){ 
+                const token = res.data
+                contex.commit('StoreAccessToken',token)
+                resolve("Done")
+            }
+          }).catch( error => {
+            console.log(error)
+            reject(error)
+          });
+
+      })
+  
+    },
+
+    
 
     DestroyToken:(contex)=>{
       return new Promise((resolve)=>{
@@ -166,9 +182,7 @@ import axios from "axios";
       })
     },
 
-    AddToCart:(contex , Advertistment) =>{
-      contex.commit('UpdateCart',Advertistment)
-    }
+    
   };
 
   const mutations = {
@@ -204,11 +218,7 @@ import axios from "axios";
     },
     makeReloadGetAllEmployeeFalse : (state) => {
       state.reloadGetAllEmployee = false
-    },
-    UpdateCart : (state , Advertistment)=>{
-      state.Total = state.Total + parseInt(Advertistment.price)
-      state.Cart.push(Advertistment)
-    },
+    }
     
   };
 

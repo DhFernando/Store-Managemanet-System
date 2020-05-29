@@ -19,7 +19,7 @@ export default {
       this.$store.dispatch("GetProfile")
     }
 
-    alert(this.$store.state.reloadGetAllEmployee)
+    
   },
   
   components: {

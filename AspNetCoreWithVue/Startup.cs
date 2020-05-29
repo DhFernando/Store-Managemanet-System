@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AspNetCoreWithVue.Models;
 using AspNetCoreWithVue.Models.Account;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspNetCoreWithVue
@@ -82,15 +85,17 @@ namespace AspNetCoreWithVue
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+       
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
+            
             app.UseCors(options =>
             {
                 options.WithOrigins("http://localhost:8080")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             });
+
 
           //  app.UseAuthentication();
             if (env.IsDevelopment())
@@ -107,6 +112,8 @@ namespace AspNetCoreWithVue
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseFileServer();
+
             app.UseAuthentication();
         
             app.UseMvc(routes =>
@@ -115,6 +122,9 @@ namespace AspNetCoreWithVue
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
+
+        
     }
 }

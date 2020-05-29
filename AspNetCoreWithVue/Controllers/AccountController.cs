@@ -38,11 +38,13 @@ namespace AspNetCoreWithVue.Controllers
 
                 if (result.Succeeded && model.TokenAvailable == "null")
                 {
+                  
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = new ClaimsIdentity(new Claim[]
                      {
-                        new Claim("UserId", user.Id.ToString())
+                        new Claim("UserId", user.Id.ToString()),
+                       
                      }),
                         Expires = DateTime.UtcNow.AddDays(1),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890123456")), SecurityAlgorithms.HmacSha256Signature)
@@ -66,13 +68,16 @@ namespace AspNetCoreWithVue.Controllers
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             if(user != null && await userManager.CheckPasswordAsync(user, model.Password))
-            {
+            {   
+               
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserId", user.Id.ToString())
+                        new Claim("UserId", user.Id.ToString()),
+                       
                     }),
+
                     Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890123456")),SecurityAlgorithms.HmacSha256Signature) 
                 };
@@ -80,6 +85,7 @@ namespace AspNetCoreWithVue.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(securityToken);
+                
                 return Json(token);
             }
             return Json("faild To logIn");

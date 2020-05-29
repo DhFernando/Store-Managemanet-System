@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules:{
-    UserManagement,
-    AdvertistmentManagement
+    UserManagement:UserManagement,
+    AdvertistmentManagement :AdvertistmentManagement
   }
 })
+  
